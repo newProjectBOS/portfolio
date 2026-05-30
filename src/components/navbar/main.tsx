@@ -1,18 +1,27 @@
-import { FiFacebook, FiInstagram } from "react-icons/fi";
+import { FiFacebook, FiInstagram, FiLinkedin, FiMenu, FiMail } from "react-icons/fi";
 
 export default () => {
     return (
-        <nav className="fixed inset-x-0 top-0 z-50 bg-transparent bg-linear-to-b from-black via-black/70 text-white to-transparent bgdfsdhdgfasxsfdnyt76rqacvdfjy5e
-        tyhnthhctrdc1 j oxdmfbgo0
-     ]{|"P?;.li,kuyh5 tc5} -linear-to-t from-black to-transparent">
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-                <h1 className="text-2xl font-bold">BOS</h1>
-                <div className="flex items-center gap-4">
-                    <a href="https://instagram.com" target="_blank" rel="noreferrer" className="rounded-full bg-white/10 p-2 text-xl transition hover:bg-white/20">
+        <nav className="fixed top-0 left-0 right-0 w-full z-50 h-36 bg-gradient-to-b from-black/90 via-slate-900/60 to-transparent text-white">
+            <div className="mx-auto relative flex max-w-7xl items-center justify-center px-4 py-4">
+                <button className="absolute left-4 text-2xl text-white focus:outline-none flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
+                    <FiMenu />
+                </button>
+                <div className="text-2xl font-bold">Logo</div>
+
+                {/* Social media icons */}
+                <div className="absolute right-4 flex items-center gap-4">
+                    <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
                         <FiInstagram />
                     </a>
-                    <a href="https://facebook.com" target="_blank" rel="noreferrer" className="rounded-full bg-white/10 p-2 text-xl transition hover:bg-white/20">
+                    <a href="https://facebook.com" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
                         <FiFacebook />
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
+                        <FiLinkedin />
+                    </a>
+                    <a href="mailto:test@example.com" className="flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
+                        <FiMail />
                     </a>
                 </div>
             </div>
