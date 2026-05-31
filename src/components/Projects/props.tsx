@@ -3,4 +3,5 @@ export type ProjectsLinkProps = {
     link: string;
     description: string;
     image: string;
+    newimage?: string;
 };
