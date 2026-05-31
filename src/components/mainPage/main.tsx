@@ -30,7 +30,7 @@ export default () => {
             deleteSpeed={30}
             pauseDuration={2000}
             loop={false}
-            className="mt-8 text-md font-medium text-gray-300"
+            className="mt-8 text-md font-medium text-white text-2xl md:text-4xl"
             showCursor={true}
           />
         </div>

@@ -58,7 +58,7 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
 
   return (
     <div className={`${className}`}>
-      <span className="text-2xl md:text-4xl text-white">
+      <span className="">
         {displayText}
         {showCursor && (
           <motion.span
