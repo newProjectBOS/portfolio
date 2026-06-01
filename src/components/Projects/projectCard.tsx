@@ -29,7 +29,7 @@ const Image = ({
   hover: boolean;
 }) => {
   if (!newimage) {
-    return <img src={image} alt={name} className="w-full h-48 object-cover" />;
+    return <img src={image} alt={name} className="w-full h-48 object-cover brightness-55 hover:brightness-100" />;
   }
 
   return (
@@ -43,7 +43,7 @@ const Image = ({
         className="absolute inset-0 transition-all duration-500 ease-in-out origin-left"
         style={{ clipPath: hover ? "inset(0 100% 0 0)" : "inset(0 0% 0 0)" }}
       >
-        <img src={newimage} alt={`${name} - po`} className="w-full h-48 object-cover" />
+        <img src={newimage} alt={`${name} - po`} className="w-full h-48 object-cover brightness-55" />
       </div>
 
       <div

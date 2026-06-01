@@ -11,9 +11,9 @@ export default () => {
     <div className="App scrollbar-hidden min-h-screen pt-36">
       <Navbar />
       <MainPage />
-      <AboutUs />
-      <HorizontalView />
       <Projects />
+      <HorizontalView />
+      <AboutUs />
       <Kontakt />
     </div>
   )

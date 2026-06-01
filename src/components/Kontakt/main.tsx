@@ -3,12 +3,10 @@ import { FiPhone, FiMail, FiInstagram } from "react-icons/fi";
 export default () => {
     return (
         <div>
-            <div className="bg-gray-100 pb-50 flex flex-col items-center justify-center px-4 py-16">
+            <div className="bg-white pb-30 flex flex-col items-center justify-center px-4 py-16">
                 <hr className="border-0 h-px bg-gray-200 w-128 mx-auto mt-16 mb-32 mb-0" />
                 <div className="w-full max-w-4xl">
                     <div className="flex gap-12">
-
-                        {/* Lewa: kontakt */}
                         <div className="flex-[1.6]">
                             <p className="text-xs font-medium tracking-widest text-gray-400 uppercase mb-2">kontakt</p>
                             <h1 className="text-2xl font-medium text-gray-900 mb-4 leading-snug">
