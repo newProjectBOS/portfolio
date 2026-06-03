@@ -2,7 +2,7 @@ import { FiPhone, FiMail, FiInstagram } from "react-icons/fi";
 
 export default () => {
     return (
-        <div>
+        <div id="Contact">
             <div className="bg-white pb-30 flex flex-col items-center justify-center px-4 py-16">
                 <hr className="border-0 h-px bg-gray-200 w-128 mx-auto mt-16 mb-32 mb-0" />
                 <div className="w-full max-w-4xl">
