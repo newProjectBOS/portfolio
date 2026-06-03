@@ -70,11 +70,6 @@ const Image = ({
 export default ({ name, link, description, image, newimage }: ProjectsLinkProps) => {
 
   const [hover, setHover] = useState(false);
-
-  if(hover) {
-    console.log("hovered");
-  }
-  console.log(hover);
   return (
     <div
       className="bg-white border border-gray-200 rounded-xl overflow-hidden w-80 font-sans

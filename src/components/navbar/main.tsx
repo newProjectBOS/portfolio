@@ -7,9 +7,7 @@ export default () => {
                 <button className="absolute left-4 text-2xl text-white focus:outline-none flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
                     <FiMenu />
                 </button>
-                <div className="text-2xl font-bold">Logo</div>
-
-                {/* Social media icons */}
+                <div className="text-2xl font-bold">GrelSites</div>
                 <div className="absolute right-4 flex items-center gap-4">
                     <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full text-gray-50 text-xl transition duration-300 transform hover:scale-110 hover:bg-gray-300/20 hover:text-white">
                         <FiInstagram />

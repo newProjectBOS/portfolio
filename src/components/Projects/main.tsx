@@ -21,7 +21,7 @@ export default () => {
   const inactive = "bg-white text-gray-600 border-gray-200 hover:border-gray-400";
 
   return (
-    <div className="bg-gray-100 min-h-[60vh] flex flex-col items-center justify-center px-4 py-24">
+    <div className="bg-gray-100 min-h-[60vh] flex flex-col items-center justify-center px-4 py-24" id = "projects">
       <div className="max-w-5xl mx-auto px-4 text-center">
         <ScrableText text="Poznaj nasze projekty" className="text-4xl font-bold mb-4 text-black" />
         <hr className="my-6 border-gray-200" />
