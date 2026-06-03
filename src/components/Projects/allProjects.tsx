@@ -18,22 +18,6 @@ const data: ProjectsLinkProps[] = [
       newimage: "newexample.jpg",
     },
     {
-      name: "WeatherNow",
-      link: "https://weathernow.app",
-      description:
-        "Aplikacja pogodowa pobierająca aktualne dane meteorologiczne z zewnętrznego API.",
-      image: "example.jpg",
-      newimage: "newexample.jpg",
-    },
-    {
-      name: "ShopEase",
-      link: "https://shopease.store",
-      description:
-        "Sklep internetowy z panelem administracyjnym, koszykiem zakupowym i integracją płatności.",
-      image: "example.jpg",
-      newimage: "newexample.jpg",
-    },
-    {
       name: "FitTracker",
       link: "https://fittracker.app",
       description:

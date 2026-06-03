@@ -5,9 +5,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&display=swap');
 
-html
-{
+html {
+  scroll-behavior: smooth;
+}
 
-    scroll-behavior: smooth;
-
+#mainPage::-webkit-scrollbar {
+  display: none;
 }

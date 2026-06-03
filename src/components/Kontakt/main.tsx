@@ -1,9 +1,9 @@
 import { FiPhone, FiMail, FiInstagram } from "react-icons/fi";
 
 export default () => {
-    return (
-        <div id="Contact">
-            <div className="bg-white pb-30 flex flex-col items-center justify-center px-4 py-16">
+  return (
+        <div id="contact">
+            <div className="bg-black pb-30 flex flex-col items-center justify-center px-4 py-16">
                 <hr className="border-0 h-px bg-gray-200 w-128 mx-auto mt-16 mb-32 mb-0" />
                 <div className="w-full max-w-4xl">
                     <div className="flex gap-12">
@@ -34,8 +34,6 @@ export default () => {
                                 ))}
                             </ul>
                         </div>
-
-                        {/* Prawa: menu */}
                         <div className="flex-1 pt-0.5">
                             <p className="text-xs font-medium tracking-widest text-gray-400 uppercase mb-2">nawigacja</p>
                             <nav>
