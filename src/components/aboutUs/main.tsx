@@ -52,7 +52,7 @@ const team: TeamMember[] = [
 
 const UserCard = ({ name, role, img, socials }: TeamMember) => {
     return (
-        <div className="group h-64 [perspective:1000px]">
+        <div className="group h-64 [perspective:1000px] scroll-smooth">
             <div className="relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm [backface-visibility:hidden]">
@@ -111,7 +111,7 @@ const UserCard = ({ name, role, img, socials }: TeamMember) => {
 };
 export default () => {
     return (
-        <div className="bg-white py-50">
+        <div id="AboutUs" className="bg-white py-50">
             <div className="max-w-5xl mx-auto px-4 text-center">
                 <ScrableText text="Poznaj nasz zespół" className="text-4xl font-bold mb-4 text-black" />
                 <hr className="my-6 border-gray-200" />
