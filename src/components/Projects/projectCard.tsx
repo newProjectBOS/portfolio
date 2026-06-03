@@ -1,15 +1,17 @@
 import type { ProjectsLinkProps } from './props';
 import { useState } from "react";
+import { darkTheme, lightTheme } from './themes';
 
 const Tag = (props: any) => {
+  const theme = props.isDark ? darkTheme : lightTheme;
   return (
     <>
       {props.newimage ? (
-        <span className="inline-flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-800 px-3 py-1 rounded-full mb-3">
+        <span className={theme.tagRenovation}>
           Renowacja
         </span>
       ) : (
-        <span className="inline-flex items-center gap-1 text-xs font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full mb-3">
+        <span className={theme.tagNew}>
           Nowa strona
         </span>
       )}
@@ -67,27 +69,26 @@ const Image = ({
 };
 
 
-export default ({ name, link, description, image, newimage }: ProjectsLinkProps) => {
+export default ({ name, link, description, image, newimage, isDark = false }: ProjectsLinkProps & { isDark?: boolean }) => {
 
   const [hover, setHover] = useState(false);
+  const theme = isDark ? darkTheme : lightTheme;
   return (
     <div
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden w-80 font-sans
-             transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]
-             hover:scale-105 cursor-pointer"
+      className={theme.card}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <Image image={image} newimage={newimage} name={name} hover={hover} />
-      <div className="p-5">
-        <Tag newimage={newimage} />
-        <h3 className="text-base font-medium text-gray-900 mb-1">{name}</h3>
-        <p className="text-sm text-gray-500 leading-relaxed mb-4">{description}</p>
+      <div className={theme.cardContent}>
+        <Tag newimage={newimage} isDark={isDark} />
+        <h3 className={theme.cardTitle}>{name}</h3>
+        <p className={theme.cardDescription}>{description}</p>
         <a
           href={link}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-800 border border-blue-300 rounded-lg px-3.5 py-1.5 hover:bg-purple-50 transition-colors"
+          className={theme.cardButton}
         >
           Przejdź
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
