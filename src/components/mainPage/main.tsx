@@ -1,6 +1,6 @@
-import TypewriterText from "../../effects/TypewriterText"
-import SlideInText from "../../effects/SlideInText"
-import { useState, useEffect, useRef } from "react"
+import TypewriterText from "../../effects/TypewriterText";
+import SlideInText from "../../effects/SlideInText";
+import { useState, useEffect, useRef } from "react";
 import { FiMail, FiArrowRight } from "react-icons/fi";
 
 export default () => {
@@ -11,7 +11,9 @@ export default () => {
     const el = e.currentTarget;
     const maxScroll = el.scrollWidth - el.clientWidth;
     setProgress(maxScroll > 0 ? el.scrollLeft / maxScroll : 0);
-  }
+  };
+
+  console.log(progress);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -67,6 +69,14 @@ export default () => {
                 </button>
               </a>
             </div>
+          </div>
+          <div
+            style={{
+              transform: `translateY(${progress * 150}px)`,
+              transition: "transform 0.2s ease-out",
+            }}
+          >
+            <img src="assets/laptop.png" className="" />
           </div>
         </div>
 
