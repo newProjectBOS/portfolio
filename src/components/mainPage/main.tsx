@@ -3,6 +3,8 @@ import SlideInText from "../../effects/SlideInText";
 import { useState, useEffect, useRef } from "react";
 import { FiMail, FiArrowRight } from "react-icons/fi";
 
+import SecondDiv from "./secondDiv"
+
 export default () => {
   const [progress, setProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,11 +42,19 @@ export default () => {
         onScroll={scrollHandler}
       >
         <div className="fixed inset-0 -z-10">
-          <img src="background.gif" className="w-full h-full object-cover" />
+          <img
+            src="background.gif"
+            className="w-full h-full object-cover bg-black/75"
+          />
           <div className="absolute inset-0 bg-black/75" />
+          <div
+            className="absolute inset-0 bg-black"
+            style={{ opacity: Math.min(1, progress * 0.9) }}
+          />
         </div>
-        <div className="min-w-full h-screen pt-24 flex items-end justify-start shrink-0">
-          <div className="max-w-3xl px-4 pb-100 pl-24 text-white">
+
+        <div className="relative min-w-full h-screen pt-24 flex items-end justify-start shrink-0">
+          <div className="max-w-3xl px-4 pb-100 pl-24 text-white z-10">
             <SlideInText text="Lorem ipsum" />
             <TypewriterText
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -71,21 +81,21 @@ export default () => {
             </div>
           </div>
           <div
+            className="absolute bottom-0 right-0"
             style={{
               transform: `translateY(${progress * 150}px)`,
               transition: "transform 0.2s ease-out",
             }}
           >
-            <img src="assets/laptop.png" className="" />
           </div>
+          {/* <img src="assets/laptop.png" className="w-full" /> */}
         </div>
-
         <div
           className="min-w-full h-screen flex items-center justify-center shrink-0"
           id="projects"
         >
-          <div className="text-white text-center">
-            <p>cwel</p>
+          <div className="text-white">
+            <SecondDiv/>
           </div>
         </div>
       </div>
