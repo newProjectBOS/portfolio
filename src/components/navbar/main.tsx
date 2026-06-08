@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { FiFacebook, FiInstagram, FiLinkedin, FiMail } from "react-icons/fi";
+import socials from "../../data/socials"
 
 const items = [
   { key: "home",      label: "Strona główna", scrollTo: "MainPage" },
@@ -10,10 +10,11 @@ const items = [
 ];
 
 const socialLinks = [
-  { href: "https://instagram.com",    icon: <FiInstagram /> },
-  { href: "https://facebook.com",     icon: <FiFacebook /> },
-  { href: "https://linkedin.com",     icon: <FiLinkedin /> },
-  { href: "mailto:test@example.com",  icon: <FiMail /> },
+  { href: socials.instagram.url,    icon: socials.instagram.icon },
+  { href: socials.facebook.url,     icon: socials.facebook.icon },
+  { href: socials.linkedin.url,     icon: socials.linkedin.icon },
+  { href: `mailto:${socials.email.url}`,  icon: socials.email.icon },
+  { href: `tel:${socials.phone.url}`,  icon: socials.phone.icon },
 ];
 
 export default function Navbar() {
@@ -36,7 +37,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full z-50 h-36 bg-gradient-to-b from-black/90 via-slate-900/60 to-transparent text-white">
+    <nav className="fixed top-0 left-0 right-0 w-full z-50 h-36 bg-gradient-to-b from-black/90 to-transparent text-white">
       <div id="MainPage" className="mx-auto relative flex max-w-7xl items-center justify-center px-4 py-4">
 
         <div ref={ref} className="absolute left-4">

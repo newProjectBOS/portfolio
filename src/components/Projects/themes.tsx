@@ -10,13 +10,13 @@ export const darkTheme = {
   buttonInactive: "bg-gray-800 text-gray-300 border-gray-700 hover:border-gray-500",
   grid: "mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl",
   // karta
-  card: "bg-gray-900 border border-gray-700 rounded-xl overflow-hidden font-sans transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-pointer w-full",
+  card: "bg-gray-200 border border-gray-200 rounded-xl overflow-hidden font-sans transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-pointer w-full",
   cardContent: "p-5",
-  cardTitle: "text-base font-medium text-gray-100 mb-1",
-  cardDescription: "text-sm text-gray-400 leading-relaxed mb-4",
-  tagRenovation: "inline-flex items-center gap-1 text-xs font-medium bg-blue-900 text-blue-200 px-3 py-1 rounded-full mb-3",
-  tagNew: "inline-flex items-center gap-1 text-xs font-medium bg-yellow-900 text-yellow-200 px-3 py-1 rounded-full mb-3",
-  cardButton: "inline-flex items-center gap-1.5 text-sm font-medium text-blue-300 border border-blue-600 rounded-lg px-3.5 py-1.5 hover:bg-blue-900/30 transition-colors"
+  cardTitle: "text-base font-medium text-gray-900 mb-1",
+  cardDescription: "text-sm text-gray-500 leading-relaxed mb-4",
+  tagRenovation: "inline-flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-800 px-3 py-1 rounded-full mb-3",
+  tagNew: "inline-flex items-center gap-1 text-xs font-medium bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full mb-3",
+  cardButton: "inline-flex items-center gap-1.5 text-sm font-medium text-blue-800 border border-blue-300 rounded-lg px-3.5 py-1.5 hover:bg-purple-50 transition-colors"
 }
 
 export const lightTheme = {
