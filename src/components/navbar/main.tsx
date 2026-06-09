@@ -2,12 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import socials from "../../data/socials"
 
-const items = [
-  { key: "home",      label: "Strona główna", scrollTo: "MainPage" },
-  { key: "portfolio",     label: "Portfolio", scrollTo: "Projects" },
-  { key: "about", label: "O nas", scrollTo: "AboutUs" },
-  { key: "contact",   label: "Kontakt", scrollTo: "Contact" },
-];
+import pages from "../../data/pages";
+import type { Pages } from "../../data/pages";
 
 const socialLinks = [
   { href: socials.instagram.url,    icon: socials.instagram.icon },
@@ -57,14 +53,14 @@ export default function Navbar() {
             style={{ background: "gray-50" }}
           >
             <div className="p-1.5">
-              {items.map(({ key, label, scrollTo }) => (
+              {Object.values(pages).map((page) => (
                 <a
-                  key={key}
-                  href={`#${scrollTo}`}
+                  key={page.id}
+                  href={`#${page.id}`}
                   onClick={() => setOpen(false)}
                   className="block w-full rounded-xl px-4 py-2.5 text-left text-[13.5px] text-white/75 whitespace-nowrap transition-colors duration-150 hover:bg-white/10 hover:text-white hover:transition-colors duration-300"
                 >
-                  {label}
+                  {page.name}
                 </a>
               ))}
             </div>
