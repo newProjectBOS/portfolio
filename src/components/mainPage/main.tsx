@@ -92,7 +92,7 @@ export default () => {
         </div>
         <div
           className="min-w-full h-screen flex items-center justify-center shrink-0"
-          id="projects"
+          id="offert"
         >
           <div className="text-white">
             <SecondDiv/>

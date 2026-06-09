@@ -69,7 +69,7 @@ export default () => {
                 Proste i przejrzyste ceny, bez ukrytych kosztów. Anuluj w dowolnym momencie.
             </p>
             <hr className="border-zinc-800 mb-12" />
-            <div className="h-full w-full flex items-center justify-center px-6 py-16">
+            <div className="h-full w-full flex items-center justify-center px-6 py-16" id = "offert">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl w-full items-start">
                     {offers.map((offer) => (
                         <PricingCard key={offer.id} offer={offer} />

@@ -52,7 +52,7 @@ const team: TeamMember[] = [
 
 const UserCard = ({ name, role, img, socials }: TeamMember) => {
     return (
-        <div className="group h-64 [perspective:1000px] scroll-smooth">
+        <div className="group h-64 [perspective:1000px] scroll-smooth" id = "aboutUs">
             <div className="relative h-full w-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center rounded-xl border border-gray-100 bg-white p-6 shadow-sm [backface-visibility:hidden]">
