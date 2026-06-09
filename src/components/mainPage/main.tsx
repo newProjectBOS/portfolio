@@ -15,8 +15,6 @@ export default () => {
     setProgress(maxScroll > 0 ? el.scrollLeft / maxScroll : 0);
   };
 
-  console.log(progress);
-
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -30,6 +28,26 @@ export default () => {
 
     el.addEventListener("wheel", handler, { passive: false });
     return () => el.removeEventListener("wheel", handler);
+  }, []);
+
+  useEffect(() => {
+    const updateProgressFromHash = () => {
+      const el = containerRef.current;
+      const hash = window.location.hash;
+
+      if (hash === "#mainPage") {
+        setProgress(0);
+        if (el) el.scrollTo({ left: 0, behavior: "smooth" });
+      } else if (hash === "#offert" && el) {
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        setProgress(maxScroll > 0 ? 1 : 0);
+        el.scrollTo({ left: maxScroll, behavior: "smooth" });
+      }
+    };
+
+    updateProgressFromHash();
+    window.addEventListener("hashchange", updateProgressFromHash);
+    return () => window.removeEventListener("hashchange", updateProgressFromHash);
   }, []);
 
   return (
@@ -92,7 +110,6 @@ export default () => {
         </div>
         <div
           className="min-w-full h-screen flex items-center justify-center shrink-0"
-          id="offert"
         >
           <div className="text-white">
             <SecondDiv/>
