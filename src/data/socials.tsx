@@ -9,7 +9,7 @@ type Social = {
 const socials: Record<string, Social> = {
     "instagram": {
         name: "Instagram",
-        url: "https://instagram.com",
+        url: "https://www.instagram.com/grelsites/",
         icon: <FiInstagram />
     },
     "facebook": {

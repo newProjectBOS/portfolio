@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import socials from "../../data/socials"
 
 import pages from "../../data/pages";
-import type { Pages } from "../../data/pages";
 
 const socialLinks = [
   { href: socials.instagram.url,    icon: socials.instagram.icon },
