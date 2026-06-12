@@ -23,6 +23,10 @@ const pages: Record<string, Pages> = {
     "contact": {
         name: "Kontakt",
         id: "contact"
+    },
+    "technologies": {
+        name: "Technologie",
+        id: "technologies"
     }
 
 }

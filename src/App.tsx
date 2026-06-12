@@ -3,6 +3,7 @@ import MainPage from './components/mainPage/main.tsx'
 import AboutUs from './components/aboutUs/main.tsx'
 import Projects from './components/Projects/main.tsx'
 import Kontakt from './components/Kontakt/main.tsx'
+import Technologies from './components/technologies/main.tsx'
 import './style.css'
 
 export default () => {
@@ -11,6 +12,7 @@ export default () => {
       <Navbar />
       <MainPage />
       <Projects />
+      <Technologies />
       <AboutUs />
       <Kontakt />
     </div>
