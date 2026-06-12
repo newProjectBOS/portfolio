@@ -1,5 +1,8 @@
 import PricingCard from "./pricingCard";
 
+import "../../style.css";
+
+
 const offers = [
     {
         id: 1,
@@ -62,7 +65,7 @@ const offers = [
 export default () => {
     return (
         <div>
-            <h1 className="text-4xl md:text-6xl font-serif font-normal tracking-tight text-center text-white">
+            <h1 className="text-4xl md:text-6xl font-pliant font-normal tracking-tight text-center text-white">
                 Wybierz plan, który najlepiej pasuje do Twoich potrzeb
             </h1>
             <p className="text-center text-zinc-400 mt-4 mb-12">
