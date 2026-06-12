@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"], // Adjust paths as needed
   theme: {
     extend: {
+      fontFamily: {
+        pliant: ["Pliant", "sans-serif"],
+      },
       colors: {
         "ash-grey": {
           50: "#f3f3f1",
