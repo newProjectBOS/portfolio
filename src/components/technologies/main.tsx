@@ -14,10 +14,12 @@ export default () => {
                     className="mt-8 text-gray-600 text-lg"
                 />
 
-                <div className="mt-12">
+
+                <div className="mt-30">
                     <h3 className="text-2xl font-semibold text-black mb-6">Frontend</h3>
+                    <p className="text-md text-gray-700 mb-4 mx-auto w-3/4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id efficitur turpis. Vivamus leo ipsum, luctus eu pharetra et, congue id ex. Praesent sit amet ex sed velit tempus maximus. Maecenas egestas justo sed ante convallis cursus. Sed luctus elit eu mollis porttitor.</p>
                     <hr className="my-6 w-1/3 mx-auto border-gray-200" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 items-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-center">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
@@ -25,10 +27,11 @@ export default () => {
                     </div>
                 </div>
 
-                <div className="mt-16">
+                <div className="mt-30">
                     <h3 className="text-2xl font-semibold text-black mb-6">Backend</h3>
+                    <p className="text-md text-gray-700 mb-4 mx-auto w-3/4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id efficitur turpis. Vivamus leo ipsum, luctus eu pharetra et, congue id ex. Praesent sit amet ex sed velit tempus maximus. Maecenas egestas justo sed ante convallis cursus. Sed luctus elit eu mollis porttitor.</p>
                     <hr className="my-6 w-1/3 mx-auto border-gray-200" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" alt="Express" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
@@ -37,15 +40,17 @@ export default () => {
                     </div>
                 </div>
 
-                <div className="mt-16">
+                <div className="mt-30">
                     <h3 className="text-2xl font-semibold text-black mb-6">CMS</h3>
-                    <p className="text-md text-gray-700 mb-4">System zarządzania treścią</p>
+                    <p className="text-md text-gray-700 mb-4 mx-auto w-3/4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id efficitur turpis. Vivamus leo ipsum, luctus eu pharetra et, congue id ex. Praesent sit amet ex sed velit tempus maximus. Maecenas egestas justo sed ante convallis cursus. Sed luctus elit eu mollis porttitor.</p>
                     <hr className="my-6 w-1/3 mx-auto border-gray-200" />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg" alt="WordPress" className="h-16 w-16 mx-auto hover:scale-110 transition-transform" />
                     </div>
                 </div>
+                
+                </div>
             </div>
-        </div>
+
     )
 }
