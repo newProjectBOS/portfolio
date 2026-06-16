@@ -9,7 +9,7 @@ const socialLinks = [
   { href: socials.facebook.url,     icon: socials.facebook.icon },
   { href: socials.linkedin.url,     icon: socials.linkedin.icon },
   { href: `mailto:${socials.email.url}`,  icon: socials.email.icon },
-  { href: `tel:${socials.phone.url}`,  icon: socials.phone.icon },
+  { href: `${socials.phone.url}`,  icon: socials.phone.icon },
 ];
 
 export default function Navbar() {

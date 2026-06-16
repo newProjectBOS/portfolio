@@ -23,13 +23,13 @@ const socials: Record<string, Social> = {
         icon: <FiLinkedin />
     },
     "email": {
-        name: "email",
+        name: "Email",
         url: "test@example.com",
         icon: <FiMail />
     },
     "phone": {
-        name: "phone",
-        url: "111222333",
+        name: "Telefon",
+        url: "tel:111222333",
         icon: <FiPhone />
     }
 };

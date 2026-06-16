@@ -31,7 +31,6 @@ const NavComponent = (page: Pages) => {
 
 export default () => {
 
-    console.log(socials);
 
     return (
         <div className="bg-white py-12 px-4" id="contact">
