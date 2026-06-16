@@ -12,8 +12,8 @@ export default () => {
       <Navbar />
       <MainPage />
       <Projects />
-      <Technologies />
       <AboutUs />
+      <Technologies />
       <Kontakt />
     </div>
   )
