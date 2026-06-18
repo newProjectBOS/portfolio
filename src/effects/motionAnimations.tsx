@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import ImageComponent from "../components/technologies/imageComponent.tsx";
+import ImageComponent from "../components/technologies/imageComponent";
+
 const sectionVariants = {
   hidden: { opacity: 0, y: 48 },
   visible: {

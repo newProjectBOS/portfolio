@@ -5,6 +5,8 @@ import data from "./allProjects";
 import type { ProjectsLinkProps } from "./props";
 import ScrableText from "../../effects/scrableText";
 import { darkTheme, lightTheme } from "./themes";
+import { gridVariants, cardVariants } from "../../effects/motionAnimations";
+import { motion } from "framer-motion";
 
 type Filter = "all" | "new" | "renovation";
 
@@ -14,9 +16,12 @@ export default () => {
   const watcherRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      setDark(entry.isIntersecting);
-    }, { threshold: 0.5 });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setDark(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
 
     if (watcherRef.current) {
       observer.observe(watcherRef.current);
@@ -52,30 +57,59 @@ export default () => {
       </div>
 
       <div className={theme.buttonsContainer}>
-        <button className={`${theme.buttonBase} ${filter === "all" ? theme.buttonActive : theme.buttonInactive}`} onClick={() => setFilter("all")}>
+        <button
+          className={`${theme.buttonBase} ${
+            filter === "all" ? theme.buttonActive : theme.buttonInactive
+          }`}
+          onClick={() => setFilter("all")}
+        >
           Wszystkie
         </button>
-        <button className={`${theme.buttonBase} ${filter === "new" ? theme.buttonActive : theme.buttonInactive}`} onClick={() => setFilter("new")}>
+        <button
+          className={`${theme.buttonBase} ${
+            filter === "new" ? theme.buttonActive : theme.buttonInactive
+          }`}
+          onClick={() => setFilter("new")}
+        >
           Nowe strony
         </button>
-        <button className={`${theme.buttonBase} ${filter === "renovation" ? theme.buttonActive : theme.buttonInactive}`} onClick={() => setFilter("renovation")}>
+        <button
+          className={`${theme.buttonBase} ${
+            filter === "renovation" ? theme.buttonActive : theme.buttonInactive
+          }`}
+          onClick={() => setFilter("renovation")}
+        >
           Renowacje
         </button>
       </div>
 
-      <div ref={watcherRef} className={theme.grid}>
-        {filtered.map((project: ProjectsLinkProps) => (
-          <ProjectCard
-            key={project.link}
-            name={project.name}
-            link={project.link}
-            description={project.description}
-            image={project.image}
-            newimage={project.newimage}
-            isDark={dark}
-          />
+      <motion.div
+        ref={watcherRef}
+        className={theme.grid}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={gridVariants}
+      >
+        {filtered.map((project: ProjectsLinkProps, index) => (
+          <motion.div
+            key={project.link ?? index}
+            variants={cardVariants as any}
+            whileHover={{ scale: 1.05, y: -4, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.97 }}
+            className="cursor-pointer"
+          >
+            <ProjectCard
+              name={project.name}
+              link={project.link}
+              description={project.description}
+              image={project.image}
+              newimage={project.newimage}
+              isDark={dark}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };
