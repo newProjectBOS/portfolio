@@ -47,10 +47,10 @@ const AnimatedCard = (props: any) => {
   useEffect(() => {
     const fetchImage = async () => {
       const resultSrc = await checkImage(props.src);
-      
+
       setSrc(resultSrc);
     };
-    fetchImage();
+    if (props.src) fetchImage();
   }, [props.src]);
 
   return (
