@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import ImageComponent from "../components/technologies/imageComponent";
-
+import { useEffect, useState } from "react";
+import checkImage from "../misc/checkImage";
 const sectionVariants = {
   hidden: { opacity: 0, y: 48 },
   visible: {
@@ -36,27 +37,60 @@ const cardVariants = {
   },
 };
 
-const AnimatedCard = ({
-  src,
-  alt,
-  href,
-}: {
-  src: string;
-  alt: string;
-  href: string;
-}) => (
-  <motion.div
-    variants={cardVariants as any}
-    whileHover={{
-      scale: 1.08,
-      y: -6,
-      transition: { duration: 0.25, ease: "easeOut" },
-    }}
-    whileTap={{ scale: 0.96 }}
-    className="cursor-pointer"
-  >
-    <ImageComponent src={src} alt={alt} href={href} />
-  </motion.div>
-);
+
+const AnimatedCard = (props: any) => {
+
+  const [src, setSrc] = useState(props.src);
+
+
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const resultSrc = await checkImage(props.src);
+
+      setSrc(resultSrc);
+    };
+    if (props.src) fetchImage();
+  }, [props.src]);
+
+  return (
+    <motion.div
+      variants={cardVariants as any}
+      whileHover={{
+        scale: 1.08,
+        y: -6,
+        transition: { duration: 0.25, ease: "easeOut" },
+      }}
+      whileTap={{ scale: 0.96 }}
+      className="cursor-pointer"
+    >
+      <ImageComponent src={src} alt={props.alt} href={props.href} />
+    </motion.div>
+  );
+};
+
+// const AnimatedCard = ({
+//   src,
+//   alt,
+//   href,
+// }: {
+//   src: string;
+//   alt: string;
+//   href: string;
+// }) => (
+
+//   <motion.div
+//     variants={cardVariants as any}
+//     whileHover={{
+//       scale: 1.08,
+//       y: -6,
+//       transition: { duration: 0.25, ease: "easeOut" },
+//     }}
+//     whileTap={{ scale: 0.96 }}
+//     className="cursor-pointer"
+//   >
+//     <ImageComponent src={src} alt={alt} href={href} />
+//   </motion.div>
+// );
 
 export { sectionVariants, gridVariants, cardVariants, AnimatedCard };
