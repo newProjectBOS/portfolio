@@ -26,7 +26,33 @@ export default () => {
       el.scrollLeft += e.deltaY;
     };
 
+    // mobile support
+
+    let touchStartY = 0;
+    let touchStartScrollLeft = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartScrollLeft = el.scrollLeft;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+      if (atEnd && deltaY > 0) return;
+
+      e.preventDefault();
+      el.scrollLeft = touchStartScrollLeft + deltaY;
+    };
+    
+    // ----
+
     el.addEventListener("wheel", handler, { passive: false });
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+
     return () => el.removeEventListener("wheel", handler);
   }, []);
 
@@ -112,7 +138,7 @@ export default () => {
           className="min-w-full h-screen flex items-center justify-center shrink-0"
         >
           <div className="text-white">
-            <SecondDiv/>
+            <SecondDiv />
           </div>
         </div>
       </div>
