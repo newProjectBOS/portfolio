@@ -22,7 +22,6 @@ const Tag = (props: any) => {
 export default ({ name, link, description, image, newimage, isDark = false }: ProjectsLinkProps & { isDark?: boolean }) => {
 
   const [hover, setHover] = useState(false);
-  const theme = isDark ? darkTheme : lightTheme;
 
   return (
     <div
