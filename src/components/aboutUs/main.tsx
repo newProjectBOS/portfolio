@@ -40,6 +40,7 @@ export default () => {
                 role={member.role}
                 img={member.img}
                 socials={member.socials}
+                description={member.description}
               />
             </motion.div>
           ))}
