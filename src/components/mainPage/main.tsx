@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { FiMail, FiArrowRight } from "react-icons/fi";
 
 import SecondDiv from "./secondDiv"
+import Laptop3D from "../models/laptop"
 
 export default () => {
   const [progress, setProgress] = useState(0);
@@ -123,16 +124,20 @@ export default () => {
                 </button>
               </a>
             </div>
+            
           </div>
+
           <div
-            className="absolute bottom-0 right-0"
+            className="absolute right-0 bottom-0 w-[55%] h-[80%] max-w-3xl pointer-events-none"
             style={{
               transform: `translateY(${progress * 150}px)`,
               transition: "transform 0.2s ease-out",
             }}
           >
+            <div className="w-full h-full pointer-events-auto w-128 h-128">
+              <Laptop3D progress={progress}/>
+            </div>
           </div>
-          {/* <img src="assets/laptop.png" className="w-full" /> */}
         </div>
         <div
           className="min-w-full h-screen flex items-center justify-center shrink-0"
