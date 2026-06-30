@@ -5,17 +5,30 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
   const { scene } = useGLTF('/models/laptop.glb');
 
   const screen = scene.getObjectByName('Screen_ComputerScreen_0');
-  const laptop = scene.getObjectByName('RootNode')
+  const laptop = scene.getObjectByName('Sketchfab_model');
 
-  const multiplier = 2.5;
+  const multiplier = 2.8;
+
+  console.log(progress);
 
   if (laptop) {
-    laptop.rotation.y = progress * multiplier;
+    laptop.rotation.z = progress * multiplier;
+    laptop.scale.setScalar(3.5);
+    laptop.position.x = -10;
   }
 
   if (screen) {
     const next = (progress * -1) * multiplier;
-    screen.rotation.x = Math.max(next, -1.55);
+    screen.rotation.x = Math.max(next, -1.57);
+    const next2 = progress * 1.13;
+    
+    if (progress > 0.35) {
+      screen.scale.y = Math.max(next2, 1.13);
+    }
+    else {
+      screen.scale.y = 1
+    }
+
   }
 
   return (
@@ -30,12 +43,12 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
 export default (props: { progress?: number }) => {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0, 1, 5], fov: 60 }} shadows>
+      <Canvas camera={{ position: [0, 3, 13], fov: 60 }} shadows>
         <ambientLight intensity={0.25} />
         <directionalLight
           position={[4, 6, 4]}
           intensity={0.9}
-          color="#fff7ed"
+          color="#fffced"
           castShadow
           shadow-mapSize={[2048, 2048]}
           shadow-bias={-0.0001}
@@ -43,8 +56,8 @@ export default (props: { progress?: number }) => {
 
         <directionalLight
           position={[-6, 2, 1]}
-          intensity={0.25}
-          color="#dceeff"
+          intensity={1.25}
+          color="#ffdcdc"
         />
         
         <spotLight
@@ -63,16 +76,16 @@ export default (props: { progress?: number }) => {
           color="#ffd9a8"
         />
 
-        <Environment preset="studio" environmentIntensity={0.3} />
+        <Environment preset="studio" environmentIntensity={0.1} />
 
         <Model progress={props.progress} />
 
         <ContactShadows
           position={[0, -0.8, 0]}
-          opacity={0.4}
-          scale={10}
-          blur={2.5}
-          far={2}
+          opacity={5}
+          scale={15}
+          blur={5}
+          far={1.05}
         />
       </Canvas>
     </div>
