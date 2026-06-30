@@ -25,8 +25,14 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
+  const isFinished = !loop && displayText.length === text.length;
+
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
+
+    if (isFinished) {
+      return;
+    }
 
     if (isPaused) {
       timeout = setTimeout(() => {
@@ -54,13 +60,13 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
     }
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, isPaused, text, speed, deleteSpeed, pauseDuration, loop]);
+  }, [displayText, isDeleting, isPaused, text, speed, deleteSpeed, pauseDuration, loop, isFinished]);
 
   return (
     <div className={`${className}`}>
       <span className="">
         {displayText}
-        {showCursor && (
+        {showCursor && !isPaused && !isFinished && (
           <motion.span
             animate={{ opacity: [1, 0] }}
             transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
