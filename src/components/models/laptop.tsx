@@ -31,10 +31,7 @@ export default (props: { progress?: number }) => {
   return (
     <div className="w-full h-full">
       <Canvas camera={{ position: [0, 1, 5], fov: 60 }} shadows>
-        {/* bazowe doświetlenie */}
         <ambientLight intensity={0.25} />
-
-        {/* key light – główne, miękkie światło z góry-przodu */}
         <directionalLight
           position={[4, 6, 4]}
           intensity={0.9}
@@ -44,14 +41,12 @@ export default (props: { progress?: number }) => {
           shadow-bias={-0.0001}
         />
 
-        {/* fill light – delikatnie chłodne, z lewej */}
         <directionalLight
           position={[-6, 2, 1]}
           intensity={0.25}
           color="#dceeff"
         />
-
-        {/* rim light – subtelny kontur z tyłu */}
+        
         <spotLight
           position={[-2, 4, -6]}
           angle={0.5}
@@ -60,7 +55,6 @@ export default (props: { progress?: number }) => {
           color="#a8d8ff"
         />
 
-        {/* drugi rim z prawej, cieplejszy, dla balansu */}
         <spotLight
           position={[3, 3, -4]}
           angle={0.45}
@@ -69,7 +63,6 @@ export default (props: { progress?: number }) => {
           color="#ffd9a8"
         />
 
-        {/* odbicia środowiskowe, mocno przyciemnione */}
         <Environment preset="studio" environmentIntensity={0.3} />
 
         <Model progress={props.progress} />
