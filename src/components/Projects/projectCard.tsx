@@ -1,33 +1,36 @@
-import type { ProjectsLinkProps } from './props';
+import type { ProjectsLinkProps } from "./props";
 import { useState } from "react";
-import { darkTheme, lightTheme } from './themes';
+import { darkTheme, lightTheme } from "./themes";
 
 const Tag = (props: any) => {
   const theme = props.isDark ? darkTheme : lightTheme;
   return (
     <>
       {props.newimage ? (
-        <span className={theme.tagRenovation}>
-          Renowacja
-        </span>
+        <span className={theme.tagRenovation}>Renowacja</span>
       ) : (
-        <span className={theme.tagNew}>
-          Nowa strona
-        </span>
+        <span className={theme.tagNew}>Nowa strona</span>
       )}
     </>
   );
 };
 
-export default ({ name, link, description, image, newimage, isDark = false }: ProjectsLinkProps & { isDark?: boolean }) => {
-
+export default ({
+  name,
+  link,
+  description,
+  image,
+  newimage,
+  isDark = false,
+  isHovered,
+}: ProjectsLinkProps & { isDark?: boolean }) => {
   const [hover, setHover] = useState(false);
 
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative w-full h-[420px] rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
+      className="relative w-full h-200 rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
     >
       <img
         src={image}
@@ -53,12 +56,13 @@ export default ({ name, link, description, image, newimage, isDark = false }: Pr
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/10 to-black/85 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none" />
 
-      <div className="absolute top-6 left-0 right-0 flex justify-center pointer-events-none">
-        <h3 className="text-white text-2xl font-extrabold tracking-tight italic select-none drop-shadow-md">
+      <div className="absolute top-0 left-0 right-0 pt-7 flex flex-col items-center gap-2 pointer-events-none">
+        <h3 className="text-white text-2xl md:text-3xl font-bold tracking-tight select-none drop-shadow-md">
           {name}
         </h3>
+        <div className="w-12 h-0.75 rounded-full bg-white/60" />
       </div>
-      
+
       <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-3">
         <div>
           <Tag newimage={newimage} isDark={isDark} />
@@ -75,7 +79,7 @@ export default ({ name, link, description, image, newimage, isDark = false }: Pr
             rel="noreferrer"
             className="flex items-center gap-2 text-white text-sm font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2 transition-colors whitespace-nowrap"
           >
-            Przejdź
+            {isHovered && <p>Przejdź</p>}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
