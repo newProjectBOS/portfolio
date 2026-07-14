@@ -75,7 +75,7 @@ export default () => {
 
       <motion.div
         ref={watcherRef}
-        className="mt-6 flex flex-col gap-6 md:gap-8 w-full max-w-[96rem] px-4"
+        className="mt-6 flex flex-col gap-6 md:gap-8 w-full max-w-[140rem] px-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
