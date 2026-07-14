@@ -112,7 +112,7 @@ export default () => {
             />
             <div className="flex gap-3 mt-10">
               <a href="#contact">
-                <button className="flex items-center gap-2 px-7 py-3 bg-white text-black text-sm font-medium rounded-lg hover:bg-gray-100 active:scale-95 transition-all hover:cursor-pointer">
+                <button className="flex items-center gap-2 px-7 py-3 bg-white text-black text-sm font-medium rounded-lg border hover:bg-white/5 hover:border-white/70 hover:text-white active:scale-95 transition-all hover:cursor-pointer">
                   <FiMail size={15} />
                   Kontakt
                 </button>
