@@ -16,6 +16,18 @@ const TypeScript = `<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "
 
 const JS = `<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"> <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="960.000000pt" height="960.000000pt" viewBox="0 0 960.000000 960.000000" preserveAspectRatio="xMidYMid meet"> <g transform="translate(0.000000,960.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none"> <path d="M805 9590 c-3 -5 -20 -10 -37 -10 -18 0 -48 -5 -67 -11 -87 -27 -178 -64 -203 -81 -14 -10 -29 -18 -33 -18 -14 0 -131 -89 -179 -136 -101 -100 -174 -209 -218 -329 -39 -107 -48 -139 -48 -173 0 -17 -4 -34 -10 -37 -14 -9 -14 -7991 0 -8000 6 -3 10 -20 10 -37 0 -34 9 -66 48 -173 44 -120 117 -229 218 -329 48 -47 165 -136 179 -136 4 0 19 -8 33 -18 27 -19 127 -58 212 -84 67 -20 8123 -20 8190 0 194 59 319 131 444 258 47 48 136 165 136 179 0 4 8 19 18 33 19 27 58 127 84 212 20 67 20 8123 0 8190 -26 85 -65 185 -84 212 -10 14 -18 29 -18 33 0 14 -89 131 -136 179 -100 101 -209 174 -329 218 -107 39 -139 48 -173 48 -17 0 -34 5 -37 10 -4 7 -1348 10 -4000 10 -2652 0 -3996 -3 -4000 -10z m6765 -4384 c417 -56 708 -238 938 -589 55 -83 62 -101 51 -112 -24 -23 -662 -435 -674 -435 -6 0 -33 34 -60 76 -95 145 -222 240 -365 275 -30 7 -102 13 -160 12 -121 -1 -192 -21 -277 -79 -177 -122 -205 -400 -57 -580 70 -86 273 -200 559 -314 553 -221 930 -469 1112 -732 136 -196 197 -390 210 -658 26 -567 -261 -1004 -792 -1203 -403 -151 -956 -154 -1396 -7 -271 90 -531 259 -707 459 -103 116 -227 305 -220 336 3 13 689 435 709 435 4 0 31 -33 58 -73 160 -237 352 -381 586 -439 127 -31 364 -31 478 0 233 64 365 204 375 398 8 153 -46 266 -176 370 -73 58 -361 200 -613 303 -598 242 -891 469 -1054 814 -86 182 -121 373 -112 620 8 235 61 409 180 590 184 282 503 475 877 531 124 18 397 19 530 2z m-2352 -1688 c-3 -1568 -4 -1668 -22 -1758 -107 -556 -443 -888 -996 -984 -132 -24 -362 -31 -495 -17 -218 24 -373 69 -546 158 -203 104 -385 268 -512 460 -65 98 -115 190 -106 196 45 35 674 437 683 437 7 0 43 -46 81 -102 88 -132 220 -265 297 -301 112 -53 226 -68 356 -47 153 25 248 91 307 214 67 141 65 73 65 1827 l0 1579 445 0 445 0 -2 -1662z"/> </g> </svg> `;
 
+const NodeJS = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg`;
+
+const Express = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg`;
+
+const MongoDB = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg`;
+
+const Redis = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg`;
+
+const MySQL = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg`;
+
+const WordPress = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg`;
+
 export default () => {
   return (
     <div id="technologies" className="bg-white py-20">
@@ -156,30 +168,60 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg"
-              alt="Node.js"
-              href="https://nodejs.org"
+
+            <SVG3D
+              svg={NodeJS}
+              smoothness={0.6}
+              color="#4f46e5"
+              texture="nodejs.png"
+              textureOffset={[0.06, 0]}
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg"
-              alt="Express"
-              href="https://expressjs.com"
+
+            <SVG3D
+              svg={Express}
+              smoothness={0.6}
+              color="#000000"
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
-              alt="MongoDB"
-              href="https://www.mongodb.com"
+
+            <SVG3D
+              svg={MongoDB}
+              smoothness={0.6}
+              color="#22c55e"
+              texture="MongoDB_texture.png"
+              textureRepeat={0.9}
+              textureOffset={[0.24, 0]}
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
-              alt="Redis"
-              href="https://redis.io"
+
+            <SVG3D
+              svg={Redis}
+              smoothness={0.6}
+              color="#ef4444"
+              texture="Redis_texture.png"
+              textureRepeat={0.95}
+              textureOffset={[0, -0.05]}
+              animate="float"
+              cursorOrbit
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
-              alt="MySQL"
-              href="https://www.mysql.com"
+
+            <SVG3D
+              svg={MySQL}
+              smoothness={0.6}
+              color="#01698e"
+              animate="float"
+              cursorOrbit
+              resetOnIdle
+              resetDelay={0.2}
             />
           </motion.div>
         </motion.div>
@@ -214,11 +256,17 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg"
-              alt="WordPress"
-              href="https://wordpress.org"
+
+            <SVG3D
+              svg={WordPress}
+              smoothness={0.6}
+              color="#585c60"
+              animate="float"
+              cursorOrbit
+              resetOnIdle
+              resetDelay={0.2}
             />
+
           </motion.div>
         </motion.div>
       </div>
