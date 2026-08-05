@@ -26,7 +26,8 @@ export default () => {
   useEffect(() => {
     const mq = window.matchMedia(DESKTOP);
     const onChange = () => setIsDesktop(mq.matches);
-    mq.addEventListener("change", onChange);
+    
+    
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
@@ -48,16 +49,31 @@ export default () => {
     const secondPanel = secondPanelRef.current;
     if (!el || !secondPanel) return;
 
-    const atEnd = () => el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+    // iOS raportuje scrollLeft/scrollTop ułamkowo (device pixel ratio), więc
+    // tolerancja 1px potrafiła nie wykryć końca przewijania.
+    const EDGE_EPS = 2;
+
+    const atEnd = () =>
+      el.scrollLeft + el.clientWidth >= el.scrollWidth - EDGE_EPS;
+
+    // h-[100dvh] podąża za dynamicznym viewportem, a window.innerHeight w
+    // Safari na iOS zmienia się inaczej wraz ze zwijaniem paska adresu.
+    // Bierzemy mniejszą z wartości, żeby ten test nie migotał w trakcie gestu.
+    const viewportHeight = () =>
+      Math.min(window.innerHeight, window.visualViewport?.height ?? window.innerHeight);
+
     const isFullyInView = () => {
       const rect = el.getBoundingClientRect();
-      return rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+      return rect.top <= EDGE_EPS && rect.bottom >= viewportHeight() - EDGE_EPS;
     };
+
     const panelCanScroll = (delta: number) => {
       if (!atEnd()) return false;
       const max = secondPanel.scrollHeight - secondPanel.clientHeight;
-      if (max <= 1) return false;
-      return delta > 0 ? secondPanel.scrollTop < max - 1 : secondPanel.scrollTop > 1;
+      if (max <= EDGE_EPS) return false;
+      return delta > 0
+        ? secondPanel.scrollTop < max - EDGE_EPS
+        : secondPanel.scrollTop > EDGE_EPS;
     };
 
     const handleWheel = (e: WheelEvent) => {
@@ -78,33 +94,50 @@ export default () => {
     let axis: "x" | "y" | null = null;
     let lastX = 0;
     let lastY = 0;
+    // Safari na iOS przypisuje gest jednemu kontenerowi na cały czas jego
+    // trwania i nie potrafi "oddać" go w połowie. Dlatego decyzję o
+    // przechwyceniu podejmujemy RAZ, przy pierwszym ruchu, i trzymamy się jej
+    // aż do puszczenia palca. Wcześniejsze podejmowanie jej przy każdym
+    // touchmove powodowało, że po dojechaniu do dołu panelu z ofertami
+    // zaczynaliśmy blokować zdarzenia i strona przestawała się przewijać.
+    let owned: boolean | null = null;
 
     const handleTouchStart = (e: TouchEvent) => {
       lastX = e.touches[0].clientX;
       lastY = e.touches[0].clientY;
       axis = null;
+      owned = null;
+    };
+
+    const handleTouchEnd = () => {
+      axis = null;
+      owned = null;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isFullyInView()) return;
-
       const x = e.touches[0].clientX;
       const y = e.touches[0].clientY;
       const dx = lastX - x;
       const dy = lastY - y;
       lastX = x;
       lastY = y;
+
       if (axis === null) {
         if (dx === 0 && dy === 0) return;
         axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+
+        const first = axis === "x" ? dx : dy;
+        owned =
+          isFullyInView() &&
+          !(axis === "y" && panelCanScroll(first)) &&
+          !(atEnd() && first > 0);
       }
 
-      const delta = axis === "x" ? dx : dy;
-      if (axis === "y" && panelCanScroll(delta)) return;
-      if (atEnd() && delta > 0) return;
+      // Gest należy do przeglądarki — nie dotykamy go do końca.
+      if (!owned) return;
 
       e.preventDefault();
-      el.scrollLeft += delta;
+      el.scrollLeft += axis === "x" ? dx : dy;
     };
 
     const handleResize = () => {
@@ -115,12 +148,16 @@ export default () => {
     el.addEventListener("wheel", handleWheel, { passive: false });
     el.addEventListener("touchstart", handleTouchStart, { passive: true });
     el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    el.addEventListener("touchend", handleTouchEnd, { passive: true });
+    el.addEventListener("touchcancel", handleTouchEnd, { passive: true });
     window.addEventListener("resize", handleResize);
 
     return () => {
       el.removeEventListener("wheel", handleWheel);
       el.removeEventListener("touchstart", handleTouchStart);
       el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchend", handleTouchEnd);
+      el.removeEventListener("touchcancel", handleTouchEnd);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -163,25 +200,29 @@ export default () => {
 
   return (
     <div className="relative -mt-36 overflow-x-hidden">
+      {/* Tło musi żyć POZA poziomym kontenerem przewijania: w Safari na iOS
+          element position:fixed będący dzieckiem kontenera overflow:auto jest
+          traktowany jak część jego zawartości i zawyża scrollWidth, przez co
+          detekcja końca przewijania nigdy nie zwracała prawdy. */}
+      <div className="fixed inset-0 -z-10">
+        <img
+          src="background.gif"
+          className="w-full h-full object-cover bg-black/75"
+        />
+        <div className="absolute inset-0 bg-black/75" />
+        <div
+          className="absolute inset-0 bg-black"
+          style={{ opacity: Math.min(1, progress * 0.9) }}
+        />
+      </div>
+
       <div
         ref={containerRef}
         id="mainPage"
-        className="relative flex h-[100dvh] w-full overflow-x-auto overflow-y-hidden"
+        className="relative flex h-[100dvh] w-full overflow-x-auto overflow-y-hidden overscroll-x-contain"
         style={{ scrollbarWidth: "none" }}
         onScroll={scrollHandler}
       >
-        <div className="fixed inset-0 -z-10">
-          <img
-            src="background.gif"
-            className="w-full h-full object-cover bg-black/75"
-          />
-          <div className="absolute inset-0 bg-black/75" />
-          <div
-            className="absolute inset-0 bg-black"
-            style={{ opacity: Math.min(1, progress * 0.9) }}
-          />
-        </div>
-
         <div className="relative w-full min-w-full max-w-full shrink-0 h-full overflow-hidden pt-24 sm:pt-28 md:pt-32 flex flex-col md:flex-row md:items-end justify-start">
           <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
             <SlideInText text="Lorem ipsum" className="text-3xl sm:text-4xl md:text-4xl" />
@@ -217,8 +258,15 @@ export default () => {
 
         <div
           ref={secondPanelRef}
-          className="w-full min-w-full max-w-full shrink-0 h-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden flex flex-col"
-          style={{ scrollbarWidth: "none" }}
+          className="w-full min-w-full max-w-full shrink-0 h-full overflow-y-auto overflow-x-hidden overscroll-y-contain [&::-webkit-scrollbar]:hidden flex flex-col"
+          style={{
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch",
+            // Mówi Safari wprost, że ten panel obsługuje pionowe przesuwanie
+            // natywnie — bez tego iOS potrafi przypisać gest niewłaściwemu
+            // kontenerowi i "przykleić" go tam do końca gestu.
+            touchAction: "pan-y",
+          }}
         >
           <div className="w-full min-w-0 my-auto text-white py-24 sm:py-28 md:py-40">
             <SecondDiv />
