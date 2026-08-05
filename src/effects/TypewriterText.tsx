@@ -63,8 +63,11 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
   }, [displayText, isDeleting, isPaused, text, speed, deleteSpeed, pauseDuration, loop, isFinished]);
 
   return (
-    <div className={`${className}`}>
-      <span className="">
+    <div className={`relative ${className}`}>
+      <span className="invisible" aria-hidden="true">
+        {text}
+      </span>
+      <span className="absolute inset-0">
         {displayText}
         {showCursor && !isPaused && !isFinished && (
           <motion.span
