@@ -7,7 +7,7 @@ import UserCard from "./userCard";
 
 export default () => {
   return (
-    <div id="AboutUs" className="bg-gray-50 py-50">
+    <div id="aboutUs" className="bg-gray-50 py-50">
       <div className="max-w-5xl mx-auto px-4 text-center">
         <ScrableText
           text="Poznaj nasz zespół"

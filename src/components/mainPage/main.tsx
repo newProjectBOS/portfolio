@@ -6,9 +6,16 @@ import { FiMail, FiArrowRight } from "react-icons/fi";
 import SecondDiv from "./secondDiv"
 import Laptop3D from "../models/laptop"
 
+const DESKTOP = "(min-width: 768px)";
+
 export default () => {
   const [progress, setProgress] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(DESKTOP).matches
+  );
+  const [inView, setInView] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const secondPanelRef = useRef<HTMLDivElement>(null);
 
   const scrollHandler = (e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
@@ -17,44 +24,105 @@ export default () => {
   };
 
   useEffect(() => {
+    const mq = window.matchMedia(DESKTOP);
+    const onChange = () => setIsDesktop(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    const handler = (e: WheelEvent) => {
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
-      if (atEnd && e.deltaY > 0) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.intersectionRatio >= 1),
+      { threshold: 1 }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    const secondPanel = secondPanelRef.current;
+    if (!el || !secondPanel) return;
+
+    const atEnd = () => el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+    const isFullyInView = () => {
+      const rect = el.getBoundingClientRect();
+      return rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+    };
+    const panelCanScroll = (delta: number) => {
+      if (!atEnd()) return false;
+      const max = secondPanel.scrollHeight - secondPanel.clientHeight;
+      if (max <= 1) return false;
+      return delta > 0 ? secondPanel.scrollTop < max - 1 : secondPanel.scrollTop > 1;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (!isFullyInView()) return;
+
+      const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      const delta = horizontal ? e.deltaX : e.deltaY;
+
+      if (!horizontal && panelCanScroll(delta)) return;
+      if (atEnd() && delta > 0) return;
+
       e.preventDefault();
-      el.scrollLeft += e.deltaY;
+      el.scrollLeft += delta;
     };
 
     // mobile support
 
-    let touchStartY = 0;
-    let touchStartScrollLeft = 0;
+    let axis: "x" | "y" | null = null;
+    let lastX = 0;
+    let lastY = 0;
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartScrollLeft = el.scrollLeft;
+      lastX = e.touches[0].clientX;
+      lastY = e.touches[0].clientY;
+      axis = null;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
+      if (!isFullyInView()) return;
 
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
-      if (atEnd && deltaY > 0) return;
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      const dx = lastX - x;
+      const dy = lastY - y;
+      lastX = x;
+      lastY = y;
+      if (axis === null) {
+        if (dx === 0 && dy === 0) return;
+        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      }
+
+      const delta = axis === "x" ? dx : dy;
+      if (axis === "y" && panelCanScroll(delta)) return;
+      if (atEnd() && delta > 0) return;
 
       e.preventDefault();
-      el.scrollLeft = touchStartScrollLeft + deltaY;
+      el.scrollLeft += delta;
     };
-    
-    // ----
 
-    el.addEventListener("wheel", handler, { passive: false });
-    el.addEventListener('touchstart', handleTouchStart, { passive: true });
-    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    const handleResize = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      setProgress(maxScroll > 0 ? el.scrollLeft / maxScroll : 0);
+    };
 
-    return () => el.removeEventListener("wheel", handler);
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    el.addEventListener("touchstart", handleTouchStart, { passive: true });
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      el.removeEventListener("wheel", handleWheel);
+      el.removeEventListener("touchstart", handleTouchStart);
+      el.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -66,8 +134,7 @@ export default () => {
         setProgress(0);
         if (el) el.scrollTo({ left: 0, behavior: "smooth" });
       } else if (hash === "#offert" && el) {
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        setProgress(maxScroll > 0 ? 1 : 0);
+        const maxScroll = el.scrollWidth - el.clientWidth;        setProgress(maxScroll > 0 ? 1 : 0);
         el.scrollTo({ left: maxScroll, behavior: "smooth" });
       }
     };
@@ -77,12 +144,29 @@ export default () => {
     return () => window.removeEventListener("hashchange", updateProgressFromHash);
   }, []);
 
+  const actionButtons = (
+    <>
+      <a href="#contact" className="w-full sm:w-auto">
+        <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3 bg-white text-black text-sm font-medium rounded-lg hover:bg-gray-100 active:scale-95 transition-all hover:cursor-pointer">
+          <FiMail size={15} />
+          Kontakt
+        </button>
+      </a>
+      <a href="#projects" className="w-full sm:w-auto">
+        <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3 text-white text-sm font-medium rounded-lg border border-white/30 hover:border-white/70 hover:bg-white/5 active:scale-95 transition-all hover:cursor-pointer">
+          Projekty
+          <FiArrowRight size={15} />
+        </button>
+      </a>
+    </>
+  );
+
   return (
-    <div className="relative">
+    <div className="relative -mt-36 overflow-x-hidden">
       <div
         ref={containerRef}
         id="mainPage"
-        className="relative flex overflow-x-auto h-screen"
+        className="relative flex h-[100dvh] w-full overflow-x-auto overflow-y-hidden"
         style={{ scrollbarWidth: "none" }}
         onScroll={scrollHandler}
       >
@@ -98,57 +182,55 @@ export default () => {
           />
         </div>
 
-        <div className="relative min-w-full h-screen pt-24 flex items-end justify-start shrink-0">
-          <div className="max-w-3xl px-4 pb-100 pl-24 text-white z-10">
-            <SlideInText text="Lorem ipsum" />
+        <div className="relative w-full min-w-full max-w-full shrink-0 h-full overflow-hidden pt-24 sm:pt-28 md:pt-32 flex flex-col md:flex-row md:items-end justify-start">
+          <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
+            <SlideInText text="Lorem ipsum" className="text-3xl sm:text-4xl md:text-4xl" />
             <TypewriterText
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               speed={50}
               deleteSpeed={30}
               pauseDuration={2000}
               loop={false}
-              className="mt-8 text-md font-medium text-white text-2xl md:text-4xl"
+              className="mt-5 sm:mt-8 font-medium text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl break-words"
               showCursor={true}
             />
-            <div className="flex gap-3 mt-10">
-              <a href="#contact">
-                <button className="flex items-center gap-2 px-7 py-3 bg-white text-black text-sm font-medium rounded-lg hover:bg-gray-100 active:scale-95 transition-all hover:cursor-pointer">
-                  <FiMail size={15} />
-                  Kontakt
-                </button>
-              </a>
-              <a href="#projects">
-                <button className="flex items-center gap-2 px-7 py-3 text-white text-sm font-medium rounded-lg border border-white/30 hover:border-white/70 hover:bg-white/5 active:scale-95 transition-all hover:cursor-pointer">
-                  Projekty
-                  <FiArrowRight size={15} />
-                </button>
-              </a>
+            <div className="hidden md:flex gap-3 mt-7 sm:mt-10">
+              {actionButtons}
             </div>
-            
           </div>
-
           <div
-            className="absolute right-0 bottom-0 w-[55%] h-[80%] max-w-3xl pointer-events-none"
+            className="order-2 relative md:absolute right-0 bottom-0 shrink-0 w-full h-[36vh] sm:h-[42vh] md:w-[55%] md:h-[80%] max-w-3xl pointer-events-none my-auto md:my-0"
             style={{
-              transform: `translateY(${progress * 150}px)`,
+              transform: `translateY(${progress * (isDesktop ? 150 : 40)}px)`,
               transition: "transform 0.2s ease-out",
             }}
           >
-            <div className="w-full h-full pointer-events-auto w-128 h-128">
+            <div className="w-full h-full pointer-events-none md:pointer-events-auto">
               <Laptop3D progress={progress}/>
             </div>
           </div>
+
+          <div className="order-3 md:hidden flex flex-col sm:flex-row gap-3 w-full px-5 sm:px-8 pb-8 z-10">
+            {actionButtons}
+          </div>
         </div>
+
         <div
-          className="min-w-full h-screen flex items-center justify-center shrink-0"
+          ref={secondPanelRef}
+          className="w-full min-w-full max-w-full shrink-0 h-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden flex flex-col"
+          style={{ scrollbarWidth: "none" }}
         >
-          <div className="text-white">
+          <div className="w-full min-w-0 my-auto text-white py-24 sm:py-28 md:py-40">
             <SecondDiv />
           </div>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full h-2 bg-white/10 z-50">
+      <div
+        className={`fixed bottom-0 left-0 w-full h-1.5 sm:h-2 bg-white/10 z-50 transition-opacity duration-300 ${
+          inView ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
         <div
           className="h-full bg-white transition-all duration-75"
           style={{ width: `${progress * 100}%` }}

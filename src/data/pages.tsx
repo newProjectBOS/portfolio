@@ -20,13 +20,13 @@ const pages: Record<string, Pages> = {
         name: "O nas",
         id: "aboutUs"
     },
+        "technologies": {
+        name: "Technologie",
+        id: "technologies"
+    },
     "contact": {
         name: "Kontakt",
         id: "contact"
-    },
-    "technologies": {
-        name: "Technologie",
-        id: "technologies"
     }
 
 }

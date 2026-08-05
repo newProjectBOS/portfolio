@@ -59,21 +59,21 @@ const offers = [
         cta: "Porozmawiaj z nami",
         dark: false,
     },
-    
+
 ];
 
 export default () => {
     return (
-        <div>
-            <h1 className="text-4xl md:text-6xl font-pliant font-normal tracking-tight text-center text-white">
+        <div className="w-full min-w-0 max-w-5xl mx-auto px-5 sm:px-8">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-pliant font-normal tracking-tight text-center text-white text-balance">
                 Wybierz plan, który najlepiej pasuje do Twoich potrzeb
             </h1>
-            <p className="text-center text-zinc-400 mt-4 mb-12">
+            <p className="text-center text-sm sm:text-base text-zinc-400 mt-3 sm:mt-4 mb-8 sm:mb-12">
                 Proste i przejrzyste ceny, bez ukrytych kosztów. Anuluj w dowolnym momencie.
             </p>
-            <hr className="border-zinc-800 mb-12" />
-            <div className="h-full w-full flex items-center justify-center px-6 py-16" id = "offert">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl w-full items-start">
+            <hr className="border-zinc-800 mb-8 sm:mb-12" />
+            <div className="w-full flex items-center justify-center" id="offert">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 max-w-4xl w-full min-w-0 items-start">
                     {offers.map((offer) => (
                         <PricingCard key={offer.id} offer={offer} />
                     ))}
