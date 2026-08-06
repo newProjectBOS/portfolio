@@ -49,15 +49,22 @@ export default () => {
     if (!el || !secondPanel) return;
 
     const atEnd = () => el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
-    const isFullyInView = () => {
+    const isFullyInView: any = () => {
       const rect = el.getBoundingClientRect();
-      return rect.top <= 1 && rect.bottom >= window.innerHeight - 1;
+      const viewport = Math.min(window.innerHeight, el.clientHeight);
+      return rect.top <= 2 && rect.bottom >= viewport - 2;
     };
     const panelCanScroll = (delta: number) => {
-      if (!atEnd()) return false;
       const max = secondPanel.scrollHeight - secondPanel.clientHeight;
       if (max <= 1) return false;
       return delta > 0 ? secondPanel.scrollTop < max - 1 : secondPanel.scrollTop > 1;
+    };
+
+    const targetFor = (delta: number): "track" | "panel" | "page" => {
+      if (!atEnd()) return "track";
+      if (panelCanScroll(delta)) return "panel";
+      if (delta < 0) return "track";
+      return "page";
     };
 
     const handleWheel = (e: WheelEvent) => {
@@ -66,8 +73,7 @@ export default () => {
       const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
       const delta = horizontal ? e.deltaX : e.deltaY;
 
-      if (!horizontal && panelCanScroll(delta)) return;
-      if (atEnd() && delta > 0) return;
+      if (!horizontal && targetFor(delta) !== "track") return;
 
       e.preventDefault();
       el.scrollLeft += delta;
@@ -76,17 +82,68 @@ export default () => {
     // mobile support
 
     let axis: "x" | "y" | null = null;
+    let startX = 0;
+    let startY = 0;
     let lastX = 0;
     let lastY = 0;
+    let lastTime = 0;
+    let velocity = 0;
+    let momentumId = 0;
+
+    const stopMomentum = () => {
+      if (momentumId) cancelAnimationFrame(momentumId);
+      momentumId = 0;
+    };
+
+    const applyVertical = (delta: number) => {
+      if (!isFullyInView()) {
+        window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+        return;
+      }
+      const target = targetFor(delta);
+      if (target === "track") el.scrollLeft += delta;
+      else if (target === "panel") secondPanel.scrollTop += delta;
+      else window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+    };
+
+    const applyDelta = (delta: number) => {
+      if (axis === "x") {
+        if (isFullyInView()) el.scrollLeft += delta;
+      } else {
+        applyVertical(delta);
+      }
+    };
+
+    const startMomentum = () => {
+      let v = velocity;
+      if (Math.abs(v) < 1) return;
+      const step = () => {
+        v *= 0.95;
+        if (Math.abs(v) < 0.3) {
+          momentumId = 0;
+          return;
+        }
+        applyDelta(v);
+        momentumId = requestAnimationFrame(step);
+      };
+      momentumId = requestAnimationFrame(step);
+    };
 
     const handleTouchStart = (e: TouchEvent) => {
-      lastX = e.touches[0].clientX;
-      lastY = e.touches[0].clientY;
+      stopMomentum();
+      startX = lastX = e.touches[0].clientX;
+      startY = lastY = e.touches[0].clientY;
+      lastTime = performance.now();
+      velocity = 0;
       axis = null;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isFullyInView()) return;
+      if (e.touches.length !== 1) return;
+
+      // preventDefault musi paść już przy pierwszym ruchu — inaczej iOS
+      // rozpocznie natywny scroll i zignoruje kolejne wywołania.
+      e.preventDefault();
 
       const x = e.touches[0].clientX;
       const y = e.touches[0].clientY;
@@ -94,17 +151,27 @@ export default () => {
       const dy = lastY - y;
       lastX = x;
       lastY = y;
+
       if (axis === null) {
-        if (dx === 0 && dy === 0) return;
-        axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+        const totalX = Math.abs(x - startX);
+        const totalY = Math.abs(y - startY);
+        if (totalX < 4 && totalY < 4) return;
+        axis = totalX > totalY ? "x" : "y";
       }
 
-      const delta = axis === "x" ? dx : dy;
-      if (axis === "y" && panelCanScroll(delta)) return;
-      if (atEnd() && delta > 0) return;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastTime);
+      lastTime = now;
 
-      e.preventDefault();
-      el.scrollLeft += delta;
+      const delta = axis === "x" ? dx : dy;
+      const v = (delta / dt) * 16;
+      velocity = Math.max(-70, Math.min(70, velocity * 0.3 + v * 0.7));
+
+      applyDelta(delta);
+    };
+
+    const handleTouchEnd = () => {
+      if (axis) startMomentum();
     };
 
     const handleResize = () => {
@@ -115,12 +182,17 @@ export default () => {
     el.addEventListener("wheel", handleWheel, { passive: false });
     el.addEventListener("touchstart", handleTouchStart, { passive: true });
     el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    el.addEventListener("touchend", handleTouchEnd, { passive: true });
+    el.addEventListener("touchcancel", handleTouchEnd, { passive: true });
     window.addEventListener("resize", handleResize);
 
     return () => {
+      stopMomentum();
       el.removeEventListener("wheel", handleWheel);
       el.removeEventListener("touchstart", handleTouchStart);
       el.removeEventListener("touchmove", handleTouchMove);
+      el.removeEventListener("touchend", handleTouchEnd);
+      el.removeEventListener("touchcancel", handleTouchEnd);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -166,7 +238,7 @@ export default () => {
       <div
         ref={containerRef}
         id="mainPage"
-        className="relative flex h-[100dvh] w-full overflow-x-auto overflow-y-hidden"
+        className="relative flex h-[100dvh] w-full overflow-x-auto overflow-y-hidden overscroll-none"
         style={{ scrollbarWidth: "none" }}
         onScroll={scrollHandler}
       >
@@ -217,7 +289,7 @@ export default () => {
 
         <div
           ref={secondPanelRef}
-          className="w-full min-w-full max-w-full shrink-0 h-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden flex flex-col"
+          className="w-full min-w-full max-w-full shrink-0 h-full overflow-y-auto overflow-x-hidden overscroll-none [&::-webkit-scrollbar]:hidden flex flex-col"
           style={{ scrollbarWidth: "none" }}
         >
           <div className="w-full min-w-0 my-auto text-white py-24 sm:py-28 md:py-40">
