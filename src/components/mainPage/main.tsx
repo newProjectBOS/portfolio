@@ -67,16 +67,32 @@ export default () => {
       return "page";
     };
 
-    const handleWheel = (e: WheelEvent) => {
-      if (!isFullyInView()) return;
+    const applyVertical = (delta: number) => {
+      if (!isFullyInView()) {
+        window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+        return;
+      }
+      const target = targetFor(delta);
+      if (target === "track") el.scrollLeft += delta;
+      else if (target === "panel") secondPanel.scrollTop += delta;
+      else window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+    };
 
+    const handleWheel = (e: WheelEvent) => {
       const horizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
       const delta = horizontal ? e.deltaX : e.deltaY;
 
-      if (!horizontal && targetFor(delta) !== "track") return;
+      if (horizontal) {
+        if (!isFullyInView()) return;
+        e.preventDefault();
+        el.scrollLeft += delta;
+        return;
+      }
 
+      // overscroll-behavior: none blokuje natywne przelewanie scrolla
+      // z panelu na stronę, więc kierujemy go ręcznie (tak jak przy dotyku)
       e.preventDefault();
-      el.scrollLeft += delta;
+      applyVertical(delta);
     };
 
     // mobile support
@@ -93,17 +109,6 @@ export default () => {
     const stopMomentum = () => {
       if (momentumId) cancelAnimationFrame(momentumId);
       momentumId = 0;
-    };
-
-    const applyVertical = (delta: number) => {
-      if (!isFullyInView()) {
-        window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
-        return;
-      }
-      const target = targetFor(delta);
-      if (target === "track") el.scrollLeft += delta;
-      else if (target === "panel") secondPanel.scrollTop += delta;
-      else window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
     };
 
     const applyDelta = (delta: number) => {
