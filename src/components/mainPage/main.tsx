@@ -140,9 +140,6 @@ export default () => {
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length !== 1) return;
-
-      // preventDefault musi paść już przy pierwszym ruchu — inaczej iOS
-      // rozpocznie natywny scroll i zignoruje kolejne wywołania.
       e.preventDefault();
 
       const x = e.touches[0].clientX;
