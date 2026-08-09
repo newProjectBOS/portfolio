@@ -5,6 +5,7 @@ import { FiMail, FiArrowRight } from "react-icons/fi";
 
 import SecondDiv from "./secondDiv"
 import Laptop3D from "../models/laptop"
+import { useAppReady } from "../../loading/loadingStore"
 
 const DESKTOP = "(min-width: 768px)";
 
@@ -14,6 +15,7 @@ export default () => {
     () => typeof window !== "undefined" && window.matchMedia(DESKTOP).matches
   );
   const [inView, setInView] = useState(true);
+  const ready = useAppReady();
   const containerRef = useRef<HTMLDivElement>(null);
   const secondPanelRef = useRef<HTMLDivElement>(null);
 
@@ -88,9 +90,6 @@ export default () => {
         el.scrollLeft += delta;
         return;
       }
-
-      // overscroll-behavior: none blokuje natywne przelewanie scrolla
-      // z panelu na stronę, więc kierujemy go ręcznie (tak jak przy dotyku)
       e.preventDefault();
       applyVertical(delta);
     };
@@ -246,7 +245,7 @@ export default () => {
       >
         <div className="fixed inset-0 -z-10">
           <img
-            src="background.gif"
+            src="/background.gif"
             className="w-full h-full object-cover bg-black/75"
           />
           <div className="absolute inset-0 bg-black/75" />
@@ -258,8 +257,15 @@ export default () => {
 
         <div className="relative w-full min-w-full max-w-full shrink-0 h-full overflow-hidden pt-24 sm:pt-28 md:pt-32 flex flex-col md:flex-row md:items-end justify-start">
           <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
-            <SlideInText text="Lorem ipsum" className="text-3xl sm:text-4xl md:text-4xl" />
+            {/* key remontuje wyłącznie te dwa węzły, żeby intro odegrało się po
+                zdjęciu overlaya — MainPage i jego pomiary scrollWidth zostają nietknięte */}
+            <SlideInText
+              key={ready ? "ready" : "init"}
+              text="Lorem ipsum"
+              className="text-3xl sm:text-4xl md:text-4xl"
+            />
             <TypewriterText
+              key={ready ? "ready" : "init"}
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               speed={50}
               deleteSpeed={30}

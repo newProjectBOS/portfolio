@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useGLTF, Environment, ContactShadows } from '@react-three/drei';
+import { useGLTF, Environment, ContactShadows, Preload, useEnvironment } from '@react-three/drei';
+import SceneReady from '../../loading/SceneReady';
 
 const Model = ({ progress = 0 }: { progress?: number }) => {
   const { scene } = useGLTF('/models/laptop.glb');
@@ -8,8 +10,6 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
   const laptop = scene.getObjectByName('Sketchfab_model');
 
   const multiplier = 2.8;
-
-  console.log(progress);
 
   if (laptop) {
     laptop.rotation.z = progress * multiplier;
@@ -43,15 +43,19 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
 export default (props: { progress?: number }) => {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0, 3, 13], fov: 60 }} shadows>
+      {/* dpr domyślnie [1, 2] — na Retinie to 4x pracy fragmentów.
+          Brak `shadows`: model wchodzi przez <primitive object={scene}>, a R3F nie
+          propaguje castShadow/receiveShadow do surowego grafu, więc mapa cieni
+          renderowała się co klatkę i nikt jej nie czytał. Widoczny cień daje
+          <ContactShadows>, niezależny od gl.shadowMap. */}
+      <Canvas camera={{ position: [0, 3, 13], fov: 60 }} dpr={[1, 1.5]}>
+        {/* Światła zostają POZA <Suspense> — gl.compile() w <Preload all />
+            wpieka ich liczbę w defines programu, więc muszą być już w scenie. */}
         <ambientLight intensity={0.25} />
         <directionalLight
           position={[4, 6, 4]}
           intensity={0.9}
           color="#fffced"
-          castShadow
-          shadow-mapSize={[2048, 2048]}
-          shadow-bias={-0.0001}
         />
 
         <directionalLight
@@ -76,20 +80,35 @@ export default (props: { progress?: number }) => {
           color="#ffd9a8"
         />
 
-        <Environment preset="studio" environmentIntensity={0.1} />
+        {/* fallback={null} jest właściwe — fallbackiem jest overlay <LoadingScreen />.
+            Bez tego boundary R3F montuje wewnętrzny <Block>, który rzuca w górę
+            obietnicę nigdy się nierozwiązującą i blokuje CAŁY root Reacta na czas
+            pobierania GLB i HDR. <Preload all /> musi iść PO <Environment>, bo
+            efekty layoutowe rodzeństwa lecą w kolejności drzewa, a scene.environment
+            przypisuje dopiero useLayoutEffect Environment. */}
+        <Suspense fallback={null}>
+          <Environment preset="studio" environmentIntensity={0.1} />
 
-        <Model progress={props.progress} />
+          <Model progress={props.progress} />
 
-        <ContactShadows
-          position={[0, -0.8, 0]}
-          opacity={5}
-          scale={15}
-          blur={5}
-          far={1.05}
-        />
+          <ContactShadows
+            position={[0, -0.8, 0]}
+            opacity={5}
+            scale={15}
+            blur={5}
+            far={1.05}
+          />
+
+          <Preload all />
+          <SceneReady signal="hero3d" />
+        </Suspense>
       </Canvas>
     </div>
   );
 }
 
 useGLTF.preload('/models/laptop.glb');
+// Bez tego HDR startuje dopiero po utworzeniu roota R3F. Klucz cache suspend-react
+// jest identyczny z tym, którego użyje <Environment preset="studio" />, więc to
+// gwarantowane trafienie w cache, a nie podwójne pobranie.
+useEnvironment.preload({ preset: 'studio' });
