@@ -14,13 +14,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <!--
-      Overlay Reacta istnieje dopiero po pobraniu i wykonaniu bundle'a
-      (three + drei + motion) — do tego czasu użytkownik patrzy na białą stronę.
-      Ten splash maluje się już przy pierwszym parsowaniu HTML. Jest RODZEŃSTWEM
-      #root, nie jego dzieckiem, bo createRoot().render() czyści kontener.
-      LoadingScreen usuwa go w useLayoutEffect przy pierwszym commicie.
-    -->
     <div
       id="boot"
       style="position:fixed;inset:0;z-index:9998;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font:700 1.5rem/1 system-ui,sans-serif"

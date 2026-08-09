@@ -257,15 +257,13 @@ export default () => {
 
         <div className="relative w-full min-w-full max-w-full shrink-0 h-full overflow-hidden pt-24 sm:pt-28 md:pt-32 flex flex-col md:flex-row md:items-end justify-start">
           <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
-            {/* key remontuje wyłącznie te dwa węzły, żeby intro odegrało się po
-                zdjęciu overlaya — MainPage i jego pomiary scrollWidth zostają nietknięte */}
             <SlideInText
-              key={ready ? "ready" : "init"}
+              key={`hero-title-${ready}`}
               text="Lorem ipsum"
               className="text-3xl sm:text-4xl md:text-4xl"
             />
             <TypewriterText
-              key={ready ? "ready" : "init"}
+              key={`hero-subtitle-${ready}`}
               text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               speed={50}
               deleteSpeed={30}
