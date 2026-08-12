@@ -1,16 +1,21 @@
 import ScrableText from "../../effects/scrableText";
 import TypewriterText from "../../effects/TypewriterText";
 import { motion } from "framer-motion";
+import { SVG3D } from "3dsvg";
 import {
   sectionVariants,
   gridVariants,
   AnimatedCard
 } from "../../effects/motionAnimations.tsx";
 
+
+import techIcons from "./techIcons.ts";
+
 export default () => {
   return (
     <div id="technologies" className="bg-white py-20">
       <div className="max-w-5xl mx-auto px-4 text-center">
+
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,26 +81,43 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
-              alt="React"
-              href="https://react.dev"
+
+            <SVG3D
+              svg={techIcons.React}
+              smoothness={0.6}
+              color="#61DAFB"
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
-              alt="Tailwind CSS"
-              href="https://tailwindcss.com"
+
+            <SVG3D
+              svg={techIcons.TailWind}
+              smoothness={0.6}
+              color="#38BDF8"
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
-              alt="TypeScript"
-              href="https://www.typescriptlang.org"
+
+            <SVG3D
+              svg={techIcons.TypeScript}
+              smoothness={0.6}
+              color="#3178C6"
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
-            <AnimatedCard
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
-              alt="JavaScript"
-              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+
+            <SVG3D
+              svg={techIcons.JavaScript}
+              smoothness={0.6}
+              color="#F7DF1E"
+              animate="float"
+              resetOnIdle
+              resetDelay={0.2}
             />
+
           </motion.div>
         </motion.div>
 
