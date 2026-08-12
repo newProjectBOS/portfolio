@@ -1,14 +1,11 @@
 import ScrableText from "../../effects/scrableText";
 import TypewriterText from "../../effects/TypewriterText";
 import { motion } from "framer-motion";
-import { SVG3D } from "3dsvg";
 import {
   sectionVariants,
   gridVariants,
+  AnimatedCard
 } from "../../effects/motionAnimations.tsx";
-
-
-import techIcons from "./techIcons.ts";
 
 
 export default () => {
@@ -82,40 +79,28 @@ export default () => {
             viewport={{ once: true, margin: "-40px" }}
           >
 
-            <SVG3D
-              svg={techIcons.React}
-              smoothness={0.6}
-              color="#61DAFB"
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
+              alt="React"
+              href="https://react.dev"
             />
 
-            <SVG3D
-              svg={techIcons.TailWind}
-              smoothness={0.6}
-              color="#38BDF8"
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
+              alt="Tailwind CSS"
+              href="https://tailwindcss.com"
             />
 
-            <SVG3D
-              svg={techIcons.TypeScript}
-              smoothness={0.6}
-              color="#3178C6"
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
+              alt="TypeScript"
+              href="https://www.typescriptlang.org"
             />
 
-            <SVG3D
-              svg={techIcons.JavaScript}
-              smoothness={0.6}
-              color="#F7DF1E"
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+              alt="JavaScript"
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
             />
 
           </motion.div>
@@ -152,59 +137,34 @@ export default () => {
             viewport={{ once: true, margin: "-40px" }}
           >
 
-            <SVG3D
-              svg={techIcons.NodeJS}
-              smoothness={0.6}
-              color="#4f46e5"
-              texture="nodejs.png"
-              textureOffset={[0.06, 0]}
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg"
+              alt="Node.js"
+              href="https://nodejs.org"
             />
 
-            <SVG3D
-              svg={techIcons.Express}
-              smoothness={0.6}
-              color="#000000"
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg"
+              alt="Express"
+              href="https://expressjs.com"
             />
 
-            <SVG3D
-              svg={techIcons.MongoDB}
-              smoothness={0.6}
-              color="#22c55e"
-              texture="MongoDB_texture.png"
-              textureRepeat={0.9}
-              textureOffset={[0.24, 0]}
-              animate="float"
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
+              alt="MongoDB"
+              href="https://www.mongodb.com"
             />
 
-            <SVG3D
-              svg={techIcons.Redis}
-              smoothness={0.6}
-              color="#ef4444"
-              texture="Redis_texture.png"
-              textureRepeat={0.95}
-              textureOffset={[0, -0.05]}
-              animate="float"
-              cursorOrbit
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
+              alt="Redis"
+              href="https://redis.io"
             />
 
-            <SVG3D
-              svg={techIcons.MySQL}
-              smoothness={0.6}
-              color="#01698e"
-              animate="float"
-              cursorOrbit
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
+              alt="MySQL"
+              href="https://www.mysql.com"
             />
           </motion.div>
         </motion.div>
@@ -240,14 +200,10 @@ export default () => {
             viewport={{ once: true, margin: "-40px" }}
           >
 
-            <SVG3D
-              svg={techIcons.WordPress}
-              smoothness={0.6}
-              color="#585c60"
-              animate="float"
-              cursorOrbit
-              resetOnIdle
-              resetDelay={0.2}
+            <AnimatedCard
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg"
+              alt="WordPress"
+              href="https://wordpress.org"
             />
 
           </motion.div>
