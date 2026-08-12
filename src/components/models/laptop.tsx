@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useGLTF, useVideoTexture, Environment, ContactShadows } from '@react-three/drei';
+import { useGLTF, useVideoTexture, Environment, ContactShadows, useEnvironment } from '@react-three/drei';
 import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { useEffect } from 'react';
 import * as THREE from 'three';
@@ -130,7 +129,6 @@ export default (props: { progress?: number }) => {
           color="#ffd9a8"
         />
         <EffectComposer multisampling={8}>
-          {/* Usunięto DepthOfField, który tworzył niskiej jakości rozmycie */}
           <Bloom luminanceThreshold={0} luminanceSmoothing={15} height={300} />
           <Noise opacity={0.005} />
           <Vignette eskil={false} offset={0.1} darkness={1.1} />
@@ -150,7 +148,4 @@ export default (props: { progress?: number }) => {
 };
 
 useGLTF.preload('/models/laptop.glb');
-// Bez tego HDR startuje dopiero po utworzeniu roota R3F. Klucz cache suspend-react
-// jest identyczny z tym, którego użyje <Environment preset="studio" />, więc to
-// gwarantowane trafienie w cache, a nie podwójne pobranie.
 useEnvironment.preload({ preset: 'studio' });
