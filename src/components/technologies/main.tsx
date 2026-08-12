@@ -1,3 +1,4 @@
+'use client'
 import ScrableText from "../../effects/scrableText";
 import TypewriterText from "../../effects/TypewriterText";
 import { motion } from "framer-motion";
