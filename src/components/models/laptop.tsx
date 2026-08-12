@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber';
-import { useGLTF, useTexture, Environment, ContactShadows } from '@react-three/drei';
-import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+import { useGLTF, useVideoTexture, Environment, ContactShadows } from '@react-three/drei';
+import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { useEffect } from 'react';
 import * as THREE from 'three';
 
@@ -11,7 +11,12 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
   const laptop = scene.getObjectByName('Sketchfab_model');
   const screenContent = scene.getObjectByName('Screen_Texture');
 
-  const texture = useTexture('/html.png');
+  const texture = useVideoTexture('/htmlanimationWithTabs.mp4', {
+    loop: true,
+    muted: true,
+    playsInline: true,
+  });
+
   const multiplier = 2.8;
 
   if (laptop) {
@@ -33,11 +38,9 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
     const mesh = screenContent as THREE.Mesh;
     const geometry = mesh.geometry;
 
-    // 1. Zmuszamy Three.js do fizycznego zmierzenia oryginalnego ekranu
     geometry.computeBoundingBox();
     const bbox = geometry.boundingBox;
 
-    // 2. NADPISUJEMY UV: Rozciągamy teksturę od rogu do rogu
     if (bbox) {
       const positionAttribute = geometry.attributes.position;
       const uvAttribute = geometry.attributes.uv;
@@ -46,7 +49,6 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
         const x = positionAttribute.getX(i);
         const y = positionAttribute.getY(i);
 
-        // Mapowanie pozycji wierzchołków na koordynaty tekstury (0 do 1)
         const u = 1.0 - (x - bbox.min.x) / (bbox.max.x - bbox.min.x);
         const v = (y - bbox.min.y) / (bbox.max.y - bbox.min.y);
 
@@ -55,33 +57,30 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
       uvAttribute.needsUpdate = true;
     }
 
-    // 3. Ustawienia tekstury
     texture.colorSpace = THREE.SRGBColorSpace;
-    texture.minFilter = THREE.LinearFilter;
+    texture.generateMipmaps = true; 
+    texture.minFilter = THREE.LinearMipmapLinearFilter; 
     texture.magFilter = THREE.LinearFilter;
+    texture.anisotropy = 16; 
     
-    // Resetujemy wszystkie poprzednie próby przesuwania
     texture.wrapS = THREE.ClampToEdgeWrapping;
     texture.wrapT = THREE.ClampToEdgeWrapping;
     texture.repeat.set(1, 1);
     texture.offset.set(0, 0);
-    
-    // UWAGA: Jeśli kod będzie do góry nogami, zmień to na false
     texture.flipY = true;
     texture.needsUpdate = true;
 
-    // 4. Nakładamy materiał na naprawioną siatkę
     mesh.material = new THREE.MeshStandardMaterial({
       map: texture,
+      toneMapped: false, 
       emissive: new THREE.Color(0xffffff),
       emissiveMap: texture,
-      emissiveIntensity: 0.2,
-      metalness: 0.2,
+      emissiveIntensity: 0.15,
+      metalness: 0.1,
       roughness: 0.2,
       side: THREE.DoubleSide,
     });
     
-    // Upewniamy się, że oryginalny ekran jest widoczny
     mesh.visible = true;
 
   }, [screenContent, texture]);
@@ -98,7 +97,12 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
 export default (props: { progress?: number }) => {
   return (
     <div className="w-full h-full -translate-10">
-      <Canvas camera={{ position: [3, 10, 37], fov: 92.5 }} shadows>
+      <Canvas 
+        camera={{ position: [3, 10, 37], fov: 92.5 }}
+        shadows 
+        dpr={[1, 2]}
+        gl={{ antialias: true, powerPreference: 'high-performance' }}
+      >
         <ambientLight intensity={0.25} />
         <directionalLight
           position={[4, 6, 4]}
@@ -127,8 +131,8 @@ export default (props: { progress?: number }) => {
           intensity={0.5}
           color="#ffd9a8"
         />
-        <EffectComposer>
-          <DepthOfField focusDistance={1} focalLength={5} bokehScale={0.4} height={480} />
+        <EffectComposer multisampling={8}>
+          {/* Usunięto DepthOfField, który tworzył niskiej jakości rozmycie */}
           <Bloom luminanceThreshold={0} luminanceSmoothing={15} height={300} />
           <Noise opacity={0.005} />
           <Vignette eskil={false} offset={0.1} darkness={1.1} />
