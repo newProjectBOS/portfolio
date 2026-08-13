@@ -245,8 +245,8 @@ export default () => {
       >
         <div className="fixed inset-0 -z-10">
           <img
-            src="/background.gif"
-            className="w-full h-full object-cover bg-black/75"
+            src="/background.webp"
+            className="w-full h-full object-cover bg-black/50"
           />
           <div className="absolute inset-0 bg-black/75" />
           <div
