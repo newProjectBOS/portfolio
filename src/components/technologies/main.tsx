@@ -7,12 +7,15 @@ import {
   gridVariants,
   AnimatedCard
 } from "../../effects/motionAnimations.tsx";
+import TechBackground from "./techBackground.tsx";
 
 
 export default () => {
   return (
-    <div id="technologies" className="bg-white py-20">
-      <div className="max-w-5xl mx-auto px-4 text-center">
+    <div id="technologies" className="relative bg-white py-20 overflow-hidden">
+      <TechBackground />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
 
         <motion.div
           initial={{ opacity: 0, y: -24 }}

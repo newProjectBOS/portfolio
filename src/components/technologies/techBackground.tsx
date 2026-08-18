@@ -5,12 +5,6 @@ import { Canvas } from "@react-three/fiber";
 export default () => {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
-
-  // Sterujemy frameloop, a nie montowaniem. Odmontowanie <Canvas> niszczyłoby
-  // i odtwarzało kontekst WebGL przy każdym przescrollowaniu, a przeglądarki
-  // limitują liczbę żywych kontekstów. Sekcja jest daleko pod foldem, więc bez
-  // tego canvas kręci rAF 60 fps już podczas ładowania strony, konkurując
-  // o wątek główny z zasobami, na które czeka ekran ładowania.
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
