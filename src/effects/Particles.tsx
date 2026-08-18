@@ -91,9 +91,7 @@ export default () => {
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        count={PARTICLE_COUNT}
-                        array={positions}
-                        itemSize={3}
+                        args={[positions, 3]}
                     />
                 </bufferGeometry>
                 <pointsMaterial
@@ -109,9 +107,7 @@ export default () => {
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        count={maxLines * 2}
-                        array={linePositions}
-                        itemSize={3}
+                        args={[linePositions, 3]}
                     />
                 </bufferGeometry>
                 <lineBasicMaterial color="#cbd5e1" transparent opacity={0.25} />
