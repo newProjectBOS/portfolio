@@ -7,19 +7,19 @@ const services = [
     id: 1,
     number: "01",
     title: "Tworzenie stron",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse laoreet tortor in faucibus consequat. Vivamus ac mollis neque. Sed pretium odio et risus lobortis, at viverra est fringilla.",
+    text: "Stworzymy dla Ciebie nowoczesną stronę internetową od podstaw — dopasowaną do Twojej firmy, marki i potrzeb. Zadbamy o estetyczny wygląd, intuicyjną obsługę i pełną funkcjonalność. Twoja strona będzie profesjonalną wizytówką firmy i narzędziem do pozyskiwania klientów.",
   },
   {
     id: 2,
     number: "02",
     title: "Modernizacja stron",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse laoreet tortor in faucibus consequat. Vivamus ac mollis neque. Sed pretium odio et risus lobortis, at viverra est fringilla.",
+    text: "Unowocześniamy, odświeżamy i optymalizujemy istniejące strony, nadając im nowoczesny wygląd i lepszą funkcjonalność. Poprawiamy ich szybkość, przejrzystość oraz działanie na urządzeniach mobilnych. Sprawiamy, że Twoja strona ponownie zaczynie przyciągać klientów.",
   },
   {
     id: 3,
     number: "03",
     title: "Automatyzacja stron",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse laoreet tortor in faucibus consequat. Vivamus ac mollis neque. Sed pretium odio et risus lobortis, at viverra est fringilla.",
+    text: "Automatyzujemy i optymalizujemy procesy w Twojej firmie, aby działała szybciej, sprawniej i bardziej efektywnie dzięki Twojej stronie. Łączymy stronę z rozwiązaniami, które ograniczają ręczną pracę i usprawniają obsługę klientów. Ty oszczędzasz czas, a Twój biznes działa sprawniej.",
   },
 ];
 
@@ -34,9 +34,9 @@ export default () => {
         laoreet tortor in faucibus consequat. Vivamus ac mollis neque. Sed
         pretium odio et risus lobortis, at viverra est fringilla.
       </p>
-      <hr className="border-zinc-800 mb-8 sm:mb-12" />
+      <hr className="border-zinc-800 mb-8 sm:mb-12 w-full lg:max-w-7xl xl:max-w-[88rem] mx-auto" />
       <div className="w-full flex items-center justify-center" id="offert">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 lg:gap-16 w-full min-w-0 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10 lg:gap-14 w-full min-w-0 lg:max-w-7xl xl:max-w-[88rem] mx-auto items-stretch">
           {services.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
