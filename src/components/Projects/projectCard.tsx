@@ -1,4 +1,4 @@
-import type { ProjectsLinkProps } from "./props";
+import type { ProjectCardProps } from "./props";
 import { useState } from "react";
 import { darkTheme, lightTheme } from "./themes";
 
@@ -23,7 +23,7 @@ export default ({
   newimage,
   isDark = false,
   isHovered,
-}: ProjectsLinkProps & { isDark?: boolean }) => {
+}: ProjectCardProps) => {
   const [hover, setHover] = useState(false);
 
   return (

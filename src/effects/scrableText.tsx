@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type JSX, type ElementType } from "react";
+import { useEffect, useRef, type JSX, type ComponentType, type Ref } from "react";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -52,6 +52,11 @@ export default function ScrambleText({
     return () => clearInterval(interval);
   }, [text, frames, frameDelay, onDone]);
 
-  const Component = Tag as ElementType;
+  // Tag to unia wszystkich tagow HTML - bez zawezenia TS liczy przeciecie propsow (never),
+  // dlatego rzutujemy na komponent o propsach ktorych faktycznie uzywamy
+  const Component = Tag as unknown as ComponentType<{
+    ref?: Ref<HTMLElement>;
+    className?: string;
+  }>;
   return <Component ref={ref} className={className} />;
 }
