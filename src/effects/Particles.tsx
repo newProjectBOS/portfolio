@@ -25,7 +25,8 @@ export default () => {
         return { positions, velocities };
     }, []);
 
-    const maxLines = PARTICLE_COUNT * PARTICLE_COUNT;
+    // realna liczba par (i < j), a nie n^2 — o połowę mniejszy bufor
+    const maxLines = (PARTICLE_COUNT * (PARTICLE_COUNT - 1)) / 2;
     const linePositions = useMemo(
         () => new Float32Array(maxLines * 2 * 3),
         [maxLines]
@@ -72,8 +73,13 @@ export default () => {
             }
         }
 
-        const lineAttr = linesRef.current?.geometry.attributes.position;
+        const lineAttr = linesRef.current?.geometry.attributes
+            .position as THREE.BufferAttribute | undefined;
         if (lineAttr) {
+            // setDrawRange ogranicza tylko rysowanie — bez update range three
+            // wysyła na GPU cały bufor co klatkę, a nie faktycznie zmieniony fragment
+            lineAttr.clearUpdateRanges();
+            lineAttr.addUpdateRange(0, lineCount * 6);
             lineAttr.needsUpdate = true;
             linesRef.current!.geometry.setDrawRange(0, lineCount * 2);
         }
@@ -85,9 +91,7 @@ export default () => {
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        count={PARTICLE_COUNT}
-                        array={positions}
-                        itemSize={3}
+                        args={[positions, 3]}
                     />
                 </bufferGeometry>
                 <pointsMaterial
@@ -103,9 +107,7 @@ export default () => {
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        count={maxLines * 2}
-                        array={linePositions}
-                        itemSize={3}
+                        args={[linePositions, 3]}
                     />
                 </bufferGeometry>
                 <lineBasicMaterial color="#cbd5e1" transparent opacity={0.25} />

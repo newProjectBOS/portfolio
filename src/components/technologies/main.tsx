@@ -5,21 +5,18 @@ import { motion } from "framer-motion";
 import {
   sectionVariants,
   gridVariants,
-  AnimatedCard,
+  AnimatedCard
 } from "../../effects/motionAnimations.tsx";
-
 import TechBackground from "./techBackground.tsx";
 
 
 export default () => {
   return (
-    <div
-      id="technologies"
-      className="relative bg-white py-20 overflow-hidden"
-    >
+    <div id="technologies" className="relative bg-white py-20 overflow-hidden">
       <TechBackground />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
+
         <motion.div
           initial={{ opacity: 0, y: -24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,26 +82,31 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
               alt="React"
               href="https://react.dev"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
               alt="Tailwind CSS"
               href="https://tailwindcss.com"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"
               alt="TypeScript"
               href="https://www.typescriptlang.org"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
               alt="JavaScript"
               href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
             />
+
           </motion.div>
         </motion.div>
 
@@ -138,26 +140,31 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg"
               alt="Node.js"
               href="https://nodejs.org"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg"
               alt="Express"
               href="https://expressjs.com"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
               alt="MongoDB"
               href="https://www.mongodb.com"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg"
               alt="Redis"
               href="https://redis.io"
             />
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
               alt="MySQL"
@@ -196,11 +203,13 @@ export default () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
           >
+
             <AnimatedCard
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg"
               alt="WordPress"
               href="https://wordpress.org"
             />
+
           </motion.div>
         </motion.div>
       </div>

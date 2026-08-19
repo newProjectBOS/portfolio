@@ -1,84 +1,145 @@
-import { FiLinkedin, FiTwitter, FiGithub, FiMail, FiInstagram } from "react-icons/fi";
+import { useState } from "react";
+import { FiLinkedin, FiTwitter, FiGithub, FiMail, FiInstagram, FiChevronDown } from "react-icons/fi";
 import type { TeamMember } from "./teamMember";
 
-const UserCard = ({ name, role, img, socials, description }: TeamMember) => {
+const Socials = ({ socials, size = "base" }: { socials: TeamMember["socials"]; size?: "base" | "sm" }) => {
+    if (!socials) return null;
+    const pad = size === "sm" ? "p-2" : "p-2";
+    const textSize = size === "sm" ? "text-sm" : "text-base";
+
     return (
-        <div className="group h-96 w-64 perspective-[1000px]">
-            <div className="relative h-full w-full transition-transform duration-700 transform-3d group-hover:transform-[rotateY(180deg)]">
+        <div className={`flex flex-wrap gap-2 justify-center ${textSize}`}>
+            {socials.linkedin && (
+                <a href={socials.linkedin} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${pad} rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 hover:text-blue-700 active:scale-95 transition-all`}>
+                    <FiLinkedin />
+                </a>
+            )}
+            {socials.twitter && (
+                <a href={socials.twitter} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${pad} rounded-full bg-sky-50 text-sky-400 hover:bg-sky-100 hover:text-sky-600 active:scale-95 transition-all`}>
+                    <FiTwitter />
+                </a>
+            )}
+            {socials.github && (
+                <a href={socials.github} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${pad} rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 active:scale-95 transition-all`}>
+                    <FiGithub />
+                </a>
+            )}
+            {socials.email && (
+                <a href={`mailto:${socials.email}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${pad} rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 active:scale-95 transition-all`}>
+                    <FiMail />
+                </a>
+            )}
+            {socials.instagram && (
+                <a href={socials.instagram} target="_blank" rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${pad} rounded-full bg-pink-50 text-pink-500 hover:bg-pink-100 hover:text-pink-700 active:scale-95 transition-all`}>
+                    <FiInstagram />
+                </a>
+            )}
+        </div>
+    );
+};
 
-                {/* Przód */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-100 shadow-md p-6 backface-hidden">
-                    <img
-                        src={img}
-                        alt={name}
-                        className="h-24 w-24 rounded-full object-cover shadow-md mb-4"
-                    />
-                    <h2 className="text-base font-semibold text-gray-800">{name}</h2>
-                    <span className="mt-1 inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-medium text-blue-600">
-                        {role}
-                    </span>
-                    <p className="mt-8 text-xs text-gray-300">najedź, aby zobaczyć więcej</p>
-                </div>
+const UserCard = ({ name, role, img, socials, description }: TeamMember) => {
+    const [open, setOpen] = useState(false);
 
-                {/* Tył */}
-                <div className="absolute inset-0 flex flex-col rounded-2xl bg-white border border-gray-100 shadow-md p-5 backface-hidden transform-[rotateY(180deg)]">
-                    <div className="flex items-center gap-3 mb-4">
-                        <img src={img} alt="" className="h-12 w-12 rounded-full object-cover" />
-                        <div>
-                            <p className="text-sm font-semibold text-gray-800">{name}</p>
-                            <span className="inline-block rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-600">
-                                {role}
-                            </span>
-                        </div>
+    return (
+        <>
+            <div
+                className="sm:hidden w-full max-w-sm mx-auto rounded-2xl bg-white border border-gray-100 shadow-md overflow-hidden active:scale-[0.99] transition-transform"
+                onClick={() => setOpen((o) => !o)}
+            >
+                <div className="flex items-center gap-4 p-4 cursor-pointer">
+                    <div className="relative shrink-0">
+                        <img
+                            src={img}
+                            alt={name}
+                            className="h-16 w-16 rounded-full object-cover shadow-sm ring-2 ring-blue-50"
+                        />
                     </div>
 
-                    <hr className="mb-3 border-gray-100" />
+                    <div className="min-w-0 flex-1">
+                        <h2 className="text-sm font-semibold text-gray-800 truncate">{name}</h2>
+                        <span className="mt-1 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-600">
+                            {role}
+                        </span>
+                    </div>
 
-                    {description && (
-                        <p className="text-xs text-gray-500 leading-relaxed flex-1">{description}</p>
-                    )}
+                    <FiChevronDown
+                        className={`text-gray-400 shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+                        size={18}
+                    />
+                </div>
 
-                    {socials && (
-                        <div className="mt-auto pt-3">
+                <div
+                    className={`grid transition-all duration-300 ease-out ${
+                        open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                    <div className="overflow-hidden">
+                        <div className="px-4 pb-4">
                             <hr className="mb-3 border-gray-100" />
-                            <p className="text-xs text-gray-400 mb-3 text-center">Media społecznościowe i kontakt</p>
-                            <div className="flex gap-3 justify-center text-base">
-                                {socials.linkedin && (
-                                    <a href={socials.linkedin} target="_blank" rel="noopener noreferrer"
-                                        className="p-2 rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 hover:text-blue-700 transition-colors">
-                                        <FiLinkedin />
-                                    </a>
-                                )}
-                                {socials.twitter && (
-                                    <a href={socials.twitter} target="_blank" rel="noopener noreferrer"
-                                        className="p-2 rounded-full bg-sky-50 text-sky-400 hover:bg-sky-100 hover:text-sky-600 transition-colors">
-                                        <FiTwitter />
-                                    </a>
-                                )}
-                                {socials.github && (
-                                    <a href={socials.github} target="_blank" rel="noopener noreferrer"
-                                        className="p-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors">
-                                        <FiGithub />
-                                    </a>
-                                )}
-                                {socials.email && (
-                                    <a href={`mailto:${socials.email}`}
-                                        className="p-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors">
-                                        <FiMail />
-                                    </a>
-                                )}
-                                {socials.instagram && (
-                                    <a href={socials.instagram} target="_blank" rel="noopener noreferrer"
-                                        className="p-2 rounded-full bg-pink-50 text-pink-500 hover:bg-pink-100 hover:text-pink-700 transition-colors">
-                                        <FiInstagram />
-                                    </a>
-                                )}
-                            </div>
+                            {description && (
+                                <p className="text-xs text-gray-500 leading-relaxed mb-4">{description}</p>
+                            )}
+                            <Socials socials={socials} size="sm" />
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div className="hidden sm:block group h-96 w-64 perspective-[1000px] mx-auto">
+                <div className="relative h-full w-full transition-transform duration-700 transform-3d group-hover:transform-[rotateY(180deg)]">
+
+                    <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-100 shadow-md p-6 backface-hidden">
+                        <img
+                            src={img}
+                            alt={name}
+                            className="h-24 w-24 rounded-full object-cover shadow-md mb-4"
+                        />
+                        <h2 className="text-base font-semibold text-gray-800">{name}</h2>
+                        <span className="mt-1 inline-block rounded-full bg-blue-50 px-3 py-0.5 text-xs font-medium text-blue-600">
+                            {role}
+                        </span>
+                        <p className="mt-8 text-xs text-gray-300">najedź, aby zobaczyć więcej</p>
+                    </div>
+
+                    <div className="absolute inset-0 flex flex-col rounded-2xl bg-white border border-gray-100 shadow-md p-5 backface-hidden transform-[rotateY(180deg)]">
+                        <div className="flex items-center gap-3 mb-4">
+                            <img src={img} alt="" className="h-12 w-12 rounded-full object-cover" />
+                            <div>
+                                <p className="text-sm font-semibold text-gray-800">{name}</p>
+                                <span className="inline-block rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-600">
+                                    {role}
+                                </span>
+                            </div>
+                        </div>
+
+                        <hr className="mb-3 border-gray-100" />
+
+                        {description && (
+                            <p className="text-xs text-gray-500 leading-relaxed flex-1">{description}</p>
+                        )}
+
+                        {socials && (
+                            <div className="mt-auto pt-3">
+                                <hr className="mb-3 border-gray-100" />
+                                <p className="text-xs text-gray-400 mb-3 text-center">Media społecznościowe i kontakt</p>
+                                <Socials socials={socials} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
