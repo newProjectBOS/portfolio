@@ -4,5 +4,9 @@ export type ProjectsLinkProps = {
     description: string;
     image: string;
     newimage?: string;
-    isHovered: boolean
+};
+
+export type ProjectCardProps = ProjectsLinkProps & {
+    isDark?: boolean;
+    isHovered: boolean;
 };

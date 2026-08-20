@@ -19,7 +19,7 @@ function chunkIntoPairs<T>(arr: T[]): T[][] {
 }
 
 export default () => {
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter] = useState<Filter>("all");
   const [dark, setDark] = useState(false);
   const watcherRef = useRef<HTMLDivElement>(null);
 
