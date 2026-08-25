@@ -5,6 +5,9 @@ export default ({ service }: any) => {
                 <p className="text-[10px] font-pliant tracking-[0.15em] uppercase text-zinc-400">
                     {service.number}
                 </p>
+                <div>
+                    <hr className="border-0 h-px bg-zinc-200" />
+                </div>
                 <h2 className="text-2xl sm:text-3xl font-pliant font-normal leading-tight tracking-tight text-balance text-white hover:text-zinc-400">
                     {service.title}
                 </h2>
