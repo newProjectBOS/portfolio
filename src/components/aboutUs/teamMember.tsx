@@ -1,16 +1,22 @@
+type TeamSocials = {
+    linkedin?: string;
+    twitter?: string;
+    github?: string;
+    email?: string;
+    instagram?: string;
+};
+
 type TeamMember = {
+    id: string;
     name: string;
     role: string;
     img: string;
     description: string;
-    experience?: string;
-    skills?: string;
-    location?: string;
-    socials?: any;
+    socials?: TeamSocials;
 };
-
 const team: TeamMember[] = [
     {
+        id: "jan-kowalski-1",
         name: "Jan Kowalski",
         role: "cwaniak",
         img: "https://randomuser.me/api/portraits/men/1.jpg",
@@ -24,6 +30,7 @@ const team: TeamMember[] = [
         }
     },
     {
+        id: "jan-kowalski-2",
         name: "Jan Kowalski",
         role: "cwaniak",
         img: "https://randomuser.me/api/portraits/men/1.jpg",
@@ -37,6 +44,7 @@ const team: TeamMember[] = [
         }
     },
     {
+        id: "jan-kowalski-3",
         name: "Jan Kowalski",
         role: "cwaniak",
         img: "https://randomuser.me/api/portraits/men/1.jpg",
@@ -52,4 +60,4 @@ const team: TeamMember[] = [
 ]
 
 export default team
-export type {TeamMember}
+export type { TeamMember, TeamSocials }
