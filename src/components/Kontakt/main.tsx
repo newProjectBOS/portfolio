@@ -4,16 +4,31 @@ import type { Social } from "../../data/socials";
 import pages from "../../data/pages";
 import type { Pages } from "../../data/pages";
 
-const ContactComponent = (social: Social) => {
+// Mapa nazw sociali na klasy hover (kolory firmowe)
+const hoverColorMap: Record<string, string> = {
+    instagram: "hover:text-pink-600",
+    facebook: "hover:text-blue-600",
+    linkedin: "hover:text-blue-700",
+    email: "hover:text-red-500",
+    phone: "hover:text-green-600",
+};
+
+const ContactComponent = ({ name, url, icon }: Social) => {
+    const hoverClass = hoverColorMap[name.toLowerCase()] ?? "";
     return (
-        <li key={social.url}>
-            <a href={social.url} className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border border-gray-100 text-xs text-gray-700 hover:border-gray-200 transition-colors">
-                {social.icon}
-                {social.name}
+        <li>
+            <a
+                href={url}
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-xs text-gray-400 hover:border-gray-200 transition-colors ${hoverClass}`}
+            >
+                <span className="[&_svg]:w-5 [&_svg]:h-5 shrink-0">
+                    {icon}
+                </span>
+                {name}
             </a>
         </li>
-    )
-}
+    );
+};
 
 const NavComponent = (page: Pages) => {
     return (
@@ -33,12 +48,38 @@ export default () => {
 
 
     return (
-        <div className="bg-white py-12 px-4" id="contact">
-            <div className="w-full max-w-4xl mx-auto">
+        <div className="relative bg-white py-12 px-4 overflow-hidden" id="contact">
+            {/* Tło falowe SVG */}
+            <div className="absolute inset-0 w-full h-full">
+                <svg 
+                    className="absolute bottom-0 w-full" 
+                    viewBox="0 0 1440 560" 
+                    preserveAspectRatio="none" 
+                    style={{ height: '600px' }}
+                >
+                    <path 
+                        d="M 0,542 C 96,452.2 288,138.6 480,93 C 672,47.4 768,286.4 960,314 C 1152,341.6 1344,247.6 1440,231 L 1440,560 L 0,560 Z" 
+                        fill="#f5f5f5"
+                        opacity="0.5"
+                    />
+                    <path 
+                        d="M 0,14 C 96,83.6 288,322.4 480,362 C 672,401.6 768,189.6 960,212 C 1152,234.4 1344,421.6 1440,474 L 1440,560 L 0,560 Z" 
+                        fill="#e5e5e5"
+                        opacity="0.5"
+                    />
+                    <path 
+                        d="M 0,171 C 144,233.8 432,490.2 720,485 C 1008,479.8 1296,213 1440,145 L 1440,560 L 0,560 Z" 
+                        fill="#d4d4d4"
+                        opacity="0.5"
+                    />
+                </svg>
+            </div>
+            
+            {/* Treść kontaktowa - na wierzchu tła */}
+            <div className="relative z-10 w-full max-w-4xl mx-auto">
                 <hr className="border-0 h-px bg-gray-100 mb-12" />
                 <div className="flex gap-12">
                     <div className="flex-[1.6]">
-                        <p className="text-xs font-medium tracking-widest text-gray-300 uppercase mb-3">kontakt</p>
                         <h2 className="text-lg font-medium text-gray-900 mb-2 leading-snug">
                             Skontaktuj się z nami
                         </h2>
