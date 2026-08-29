@@ -30,7 +30,7 @@ export default ({
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative w-full h-200 rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
+      className="relative w-full h-[24rem] md:h-[32rem] xl:h-[38rem] rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
     >
       <img
         src={image}
