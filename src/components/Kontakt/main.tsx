@@ -18,9 +18,9 @@ const ContactComponent = ({ name, url, icon }: Social) => {
         <li>
             <a
                 href={url}
-                className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-base text-gray-500 hover:border-gray-200 transition-colors ${hoverClass}`}
+                className={`flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-base text-gray-500 hover:border-gray-200 transition-colors ${hoverClass}`}
             >
-                <span className="[&_svg]:w-7 [&_svg]:h-7 shrink-0">
+                <span className="[&_svg]:w-6 [&_svg]:h-6 shrink-0">
                     {icon}
                 </span>
                 {name}
@@ -34,7 +34,7 @@ const NavComponent = (page: Pages) => {
         <a
             key={page.id}
             href={`#${page.id}`}
-            className="flex items-center justify-between py-4 border-b border-gray-100 text-base text-gray-700 hover:text-gray-400 transition-colors"
+            className="flex items-center justify-between py-3 border-b border-gray-100 text-base text-gray-700 hover:text-gray-400 transition-colors"
         >
             {page.name}
             <span className="text-gray-300 text-lg">→</span>
@@ -47,13 +47,13 @@ export default () => {
 
 
     return (
-        <div className="relative bg-white pt-20 pb-32 px-6 overflow-hidden min-h-210" id="contact">
+        <div className="relative bg-white pt-16 pb-24 px-6 overflow-hidden min-h-[42rem]" id="contact">
             <div className="absolute inset-0 w-full h-full">
                 <svg
                     className="absolute bottom-0 w-full"
                     viewBox="0 0 1440 560"
                     preserveAspectRatio="none"
-                    style={{ height: '720px' }}
+                    style={{ height: '600px' }}
                 >
                     <path 
                         d="M 0,542 C 96,452.2 288,138.6 480,93 C 672,47.4 768,286.4 960,314 C 1152,341.6 1344,247.6 1440,231 L 1440,560 L 0,560 Z" 
@@ -74,16 +74,16 @@ export default () => {
             </div>
             
             <div className="relative z-10 w-full max-w-6xl mx-auto">
-                <hr className="border-0 h-px bg-gray-100 mb-16" />
-                <div className="flex gap-16">
-                    <div className="flex-[1.6]">
-                        <h2 className="text-3xl font-medium text-gray-900 mb-4 leading-snug">
+                <hr className="border-0 h-px bg-gray-100 mb-12" />
+                <div className="flex gap-12">
+                    <div className="flex-[1.6] text-center md:text-left">
+                        <h2 className="text-2xl font-medium text-gray-900 mb-3 leading-snug">
                             Skontaktuj się z nami
                         </h2>
-                        <p className="text-base text-gray-400 leading-relaxed mb-10">
+                        <p className="text-base text-gray-400 leading-relaxed mb-8">
                             Jesteśmy do dyspozycji — napisz, zadzwoń lub obserwuj nas na Instagramie.
                         </p>
-                        <ul className="flex flex-col gap-2.5">
+                        <ul className="flex flex-col gap-1.5 w-fit mx-auto md:mx-0">
                             {Object.values(socials).map((social) => {
                                 return (
                                     <ContactComponent key={social.url} {...social} />
@@ -91,8 +91,8 @@ export default () => {
                             })}
                         </ul>
                     </div>
-                    <div className="flex-1 pt-2">
-                        <p className="text-sm font-medium tracking-widest text-gray-400 uppercase mb-5">nawigacja</p>
+                    <div className="hidden md:block flex-1 pt-2">
+                        <p className="text-sm font-medium tracking-widest text-gray-400 uppercase mb-4">nawigacja</p>
                         <nav>
                             {Object.values(pages).map((page) => {
                                 return (

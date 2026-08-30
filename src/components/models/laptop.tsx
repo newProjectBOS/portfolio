@@ -1,8 +1,37 @@
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { useGLTF, useVideoTexture, Environment, ContactShadows } from '@react-three/drei';
-import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+import { Bloom, EffectComposer, Noise } from '@react-three/postprocessing';
 import { useEffect } from 'react';
 import * as THREE from 'three';
+
+// Kompozycja sceny jest ustawiona pod kontener o proporcjach ~16/15.
+// `fov` w three.js jest PIONOWE, wiec szerokosc widocznej sceny = wysokosc * aspect.
+// Gdy kontener jest wezszy niz bazowy (np. tablet w pionie), boki sceny "znikaja"
+// i szeroki model laptopa jest ucinany na krawedzi canvasa.
+const BASE_FOV = 42;
+const BASE_ASPECT = 16 / 15;
+const MAX_FOV_SCALE = 3; // zabezpieczenie przed skrajnie szerokim fov
+
+const ResponsiveFraming = () => {
+  const camera = useThree((state) => state.camera) as THREE.PerspectiveCamera;
+  const width = useThree((state) => state.size.width);
+  const height = useThree((state) => state.size.height);
+
+  useEffect(() => {
+    if (!width || !height) return;
+
+    const aspect = width / height;
+    const baseHalf = Math.tan(THREE.MathUtils.degToRad(BASE_FOV) / 2);
+    // Poszerzamy fov dokladnie o tyle, zeby widoczny obszar sceny nigdy nie byl
+    // mniejszy niz przy proporcjach bazowych - laptop zawsze miesci sie w kadrze.
+    const scale = Math.min(Math.max(1, BASE_ASPECT / aspect), MAX_FOV_SCALE);
+
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(baseHalf * scale));
+    camera.updateProjectionMatrix();
+  }, [camera, width, height]);
+
+  return null;
+};
 
 const Model = ({ progress = 0 }: { progress?: number }) => {
   const { scene } = useGLTF('/models/laptop4.glb');
@@ -141,8 +170,10 @@ export default (props: { progress?: number }) => {
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [3, 6, 30], fov: 42 }}
-        shadows
+        camera={{ position: [3, 6, 30], fov: BASE_FOV }}
+        // "percentage" = PCFShadowMap. `shadows` (true) mapuje sie na PCFSoftShadowMap,
+        // ktory jest w three >=0.185 deprecated i i tak fallbackuje do PCFShadowMap.
+        shadows="percentage"
         dpr={[1, 2]}
         gl={{
           antialias: true,
@@ -153,6 +184,8 @@ export default (props: { progress?: number }) => {
         }}
         style={{ background: 'transparent', width: '100%', height: '100%' }}
       >
+        <ResponsiveFraming />
+
         <ambientLight intensity={0.35} color="#404060" />
 
         <directionalLight
@@ -162,12 +195,12 @@ export default (props: { progress?: number }) => {
           castShadow
           shadow-mapSize={[2048, 2048]}
           shadow-bias={-0.0005}
-        />
-
+        >
           <orthographicCamera
             attach="shadow-camera"
             args={[-15, 15, 15, -15, 1, 60]}
           />
+        </directionalLight>
 
         <directionalLight
           position={[-15, 5, -10]}
@@ -211,7 +244,6 @@ export default (props: { progress?: number }) => {
             height={300}
             mipmapBlur
           />
-          <Vignette eskil={false} offset={0.25} darkness={0.55} />
           <Noise opacity={0.035} blendFunction={THREE.MultiplyBlending} blendingMode={1} />
         </EffectComposer>
       </Canvas>
