@@ -6,6 +6,7 @@ import { FiMail, FiArrowRight } from "react-icons/fi";
 import SecondDiv from "./secondDiv"
 import Laptop3D from "../models/laptop"
 import { useAppReady } from "../../loading/loadingStore"
+import EarthBackground from "./earthBackground";
 
 const DESKTOP = "(min-width: 768px)";
 
@@ -244,11 +245,8 @@ export default () => {
         onScroll={scrollHandler}
       >
         <div className="fixed inset-0 -z-10">
-          <img
-            src="/background.webp"
-            className="w-full h-full object-cover bg-black/50"
-          />
-          <div className="absolute inset-0 bg-black/75" />
+          <EarthBackground />
+          <div className="absolute inset-0 bg-black/30" />
           <div
             className="absolute inset-0 bg-black"
             style={{ opacity: Math.min(1, progress * 0.9) }}
