@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import ImageComponent from "../components/technologies/imageComponent";
 import { useEffect, useState } from "react";
 import checkImage from "../misc/checkImage";
-const sectionVariants = {
+
+// Adnotacja Variants daje kontekst dla krzywych beziera — bez niej TS widzi
+// ease jako number[] zamiast czwórki i kazdy konsument musial rzutowac na any.
+const sectionVariants: Variants = {
   hidden: { opacity: 0, y: 48 },
   visible: {
     opacity: 1,
@@ -14,7 +18,7 @@ const sectionVariants = {
   },
 };
 
-const gridVariants = {
+const gridVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -24,7 +28,7 @@ const gridVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.85, y: 20 },
   visible: {
     opacity: 1,

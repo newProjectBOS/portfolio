@@ -6,13 +6,14 @@ import { FiMail, FiArrowRight } from "react-icons/fi";
 import SecondDiv from "./secondDiv"
 import Laptop3D from "../models/laptop"
 import { useAppReady } from "../../loading/loadingStore"
+import EarthBackground from "./earthBackground";
 
 const DESKTOP = "(min-width: 768px)";
 
 export default () => {
   const [progress, setProgress] = useState(0);
   const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== "undefined" && window.matchMedia(DESKTOP).matches
+    () => typeof window !== "undefined" && window.matchMedia(DESKTOP).matches,
   );
   const [inView, setInView] = useState(true);
   const ready = useAppReady();
@@ -38,7 +39,7 @@ export default () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.intersectionRatio >= 1),
-      { threshold: 1 }
+      { threshold: 1 },
     );
     observer.observe(el);
 
@@ -59,7 +60,9 @@ export default () => {
     const panelCanScroll = (delta: number) => {
       const max = secondPanel.scrollHeight - secondPanel.clientHeight;
       if (max <= 1) return false;
-      return delta > 0 ? secondPanel.scrollTop < max - 1 : secondPanel.scrollTop > 1;
+      return delta > 0
+        ? secondPanel.scrollTop < max - 1
+        : secondPanel.scrollTop > 1;
     };
 
     const targetFor = (delta: number): "track" | "panel" | "page" => {
@@ -77,7 +80,8 @@ export default () => {
       const target = targetFor(delta);
       if (target === "track") el.scrollLeft += delta;
       else if (target === "panel") secondPanel.scrollTop += delta;
-      else window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
+      else
+        window.scrollBy({ top: delta, behavior: "instant" as ScrollBehavior });
     };
 
     const handleWheel = (e: WheelEvent) => {
@@ -207,14 +211,16 @@ export default () => {
         setProgress(0);
         if (el) el.scrollTo({ left: 0, behavior: "smooth" });
       } else if (hash === "#offert" && el) {
-        const maxScroll = el.scrollWidth - el.clientWidth;        setProgress(maxScroll > 0 ? 1 : 0);
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        setProgress(maxScroll > 0 ? 1 : 0);
         el.scrollTo({ left: maxScroll, behavior: "smooth" });
       }
     };
 
     updateProgressFromHash();
     window.addEventListener("hashchange", updateProgressFromHash);
-    return () => window.removeEventListener("hashchange", updateProgressFromHash);
+    return () =>
+      window.removeEventListener("hashchange", updateProgressFromHash);
   }, []);
 
   const actionButtons = (
@@ -244,11 +250,8 @@ export default () => {
         onScroll={scrollHandler}
       >
         <div className="fixed inset-0 -z-10">
-          <img
-            src="/background.webp"
-            className="w-full h-full object-cover bg-black/50"
-          />
-          <div className="absolute inset-0 bg-black/75" />
+          <EarthBackground />
+          <div className="absolute inset-0 bg-black/30" />
           <div
             className="absolute inset-0 bg-black"
             style={{ opacity: Math.min(1, progress * 0.9) }}
@@ -277,14 +280,14 @@ export default () => {
             </div>
           </div>
           <div
-            className="order-2 relative md:absolute right-0 bottom-0 shrink-0 w-full h-[36vh] sm:h-[42vh] md:w-[55%] md:h-[80%] max-w-3xl pointer-events-none my-auto md:my-0"
+            className="order-2 relative md:absolute right-0 bottom-0 shrink-0 w-full h-[36vh] sm:h-[42vh] md:h-auto md:w-[55%] md:aspect-[16/15] md:max-h-[80%] max-w-3xl pointer-events-none my-auto md:my-0 will-change-transform"
             style={{
               transform: `translateY(${progress * (isDesktop ? 150 : 40)}px)`,
               transition: "transform 0.2s ease-out",
             }}
           >
             <div className="w-full h-full pointer-events-none md:pointer-events-auto">
-              <Laptop3D progress={progress}/>
+              {/*<Laptop3D progress={progress} />*/}
             </div>
           </div>
 
