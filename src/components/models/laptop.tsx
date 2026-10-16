@@ -1,15 +1,40 @@
-import { Canvas } from '@react-three/fiber';
-import { useGLTF, useVideoTexture, Environment, ContactShadows, useEnvironment } from '@react-three/drei';
-import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+import { Canvas, useThree } from '@react-three/fiber';
+import { useGLTF, useVideoTexture, Environment, ContactShadows } from '@react-three/drei';
+import { Bloom, EffectComposer, Noise } from '@react-three/postprocessing';
 import { useEffect } from 'react';
 import * as THREE from 'three';
 
-const Model = ({ progress = 0 }: { progress?: number }) => {
-  const { scene } = useGLTF('/models/laptop.glb');
+// Kompozycja sceny jest ustawiona pod kontener o proporcjach ~16/15.
+// `fov` w three.js jest PIONOWE, wiec szerokosc widocznej sceny = wysokosc * aspect.
+// Gdy kontener jest wezszy niz bazowy (np. tablet w pionie), boki sceny "znikaja"
+// i szeroki model laptopa jest ucinany na krawedzi canvasa.
+const BASE_FOV = 42;
+const BASE_ASPECT = 16 / 15;
+const MAX_FOV_SCALE = 3; // zabezpieczenie przed skrajnie szerokim fov
 
-  const screen = scene.getObjectByName('Screen_ComputerScreen_0');
-  const laptop = scene.getObjectByName('Sketchfab_model');
-  const screenContent = scene.getObjectByName('Screen_Texture');
+const ResponsiveFraming = () => {
+  const camera = useThree((state) => state.camera) as THREE.PerspectiveCamera;
+  const width = useThree((state) => state.size.width);
+  const height = useThree((state) => state.size.height);
+
+  useEffect(() => {
+    if (!width || !height) return;
+
+    const aspect = width / height;
+    const baseHalf = Math.tan(THREE.MathUtils.degToRad(BASE_FOV) / 2);
+    // Poszerzamy fov dokladnie o tyle, zeby widoczny obszar sceny nigdy nie byl
+    // mniejszy niz przy proporcjach bazowych - laptop zawsze miesci sie w kadrze.
+    const scale = Math.min(Math.max(1, BASE_ASPECT / aspect), MAX_FOV_SCALE);
+
+    camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(baseHalf * scale));
+    camera.updateProjectionMatrix();
+  }, [camera, width, height]);
+
+  return null;
+};
+
+const Model = ({ progress = 0 }: { progress?: number }) => {
+  const { scene } = useGLTF('/models/laptop4.glb');
 
   const texture = useVideoTexture('/htmlanimationWithTabs.mp4', {
     loop: true,
@@ -17,7 +42,17 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
     playsInline: true,
   });
 
+  const connector = scene.getObjectByName('Connector');
+  const screen = scene.getObjectByName('Screen');
+  const blackFrame = scene.getObjectByName('Black_Frame');
+  const blackFrame2 = scene.getObjectByName('Black_Frame_2');
+  const top = scene.getObjectByName('Top');
+
+  const screenParts = [connector, screen, blackFrame, blackFrame2, top].filter(Boolean) as THREE.Object3D[];
+  const laptop = scene.getObjectByName('Laptop');
+
   const multiplier = 2.8;
+  const MAX_ANGLE = 1.96;
 
   if (laptop) {
     laptop.rotation.z = progress * multiplier;
@@ -25,18 +60,54 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
     laptop.position.x = progress > 0 ? progress * -100 : -10;
   }
 
-  if (screen) {
-    const next = (progress * -1) * multiplier;
-    screen.rotation.x = Math.max(next, -1.57);
-    const next2 = progress * 1.13;
-    screen.scale.y = progress > 0.55 ? Math.max(next2, 1.13) : 1;
+  if (screenParts.length > 0) {
+    screenParts.forEach((part) => {
+      if (part) {
+        let angle = progress * multiplier;
+        if (angle > MAX_ANGLE) angle = MAX_ANGLE;
+        part.rotation.x = angle;
+        const next2 = progress * 1.13;
+        part.scale.y = progress > 0.55 ? Math.max(next2, 1.13) : 1;
+      }
+    });
+  } else {
+    let angle = progress * multiplier;
+    if (angle > MAX_ANGLE) angle = MAX_ANGLE;
+    scene.rotation.x = angle;
+    scene.scale.y = progress > 0.55 ? 1 + (progress - 0.55) * 0.3 : 1;
   }
 
+  // NOWE: nadaj realistyczne materiały korpusowi laptopa (aluminium) + cienie na całym modelu
   useEffect(() => {
-    if (!screenContent) return;
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
 
-    const mesh = screenContent as THREE.Mesh;
+        // Pomiń ekran - ten dostaje osobny materiał niżej
+        if (mesh === screen) return;
+
+        const mat = mesh.material as THREE.MeshStandardMaterial;
+        if (mat && mat.isMeshStandardMaterial) {
+          // Wygładzone, lekko metaliczne aluminium zamiast płaskiego/ciemnego materiału
+          mat.metalness = Math.max(mat.metalness ?? 0, 0.6);
+          mat.roughness = Math.min(mat.roughness ?? 1, 0.35);
+          mat.envMapIntensity = 1.4;
+          mat.needsUpdate = true;
+        }
+      }
+    });
+  }, [scene, screen]);
+
+  useEffect(() => {
+    if (!screen) return;
+
+    const mesh = screen as THREE.Mesh;
     const geometry = mesh.geometry;
+
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
 
     geometry.computeBoundingBox();
     const bbox = geometry.boundingBox;
@@ -49,7 +120,7 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
         const x = positionAttribute.getX(i);
         const y = positionAttribute.getY(i);
 
-        const u = 1.0 - (x - bbox.min.x) / (bbox.max.x - bbox.min.x);
+        const u = (x - bbox.min.x) / (bbox.max.x - bbox.min.x);
         const v = (y - bbox.min.y) / (bbox.max.y - bbox.min.y);
 
         uvAttribute.setXY(i, u, v);
@@ -58,11 +129,11 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
     }
 
     texture.colorSpace = THREE.SRGBColorSpace;
-    texture.generateMipmaps = true; 
-    texture.minFilter = THREE.LinearMipmapLinearFilter; 
+    texture.generateMipmaps = true;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
     texture.magFilter = THREE.LinearFilter;
-    texture.anisotropy = 16; 
-    
+    texture.anisotropy = 16;
+
     texture.wrapS = THREE.ClampToEdgeWrapping;
     texture.wrapT = THREE.ClampToEdgeWrapping;
     texture.repeat.set(1, 1);
@@ -72,23 +143,24 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
 
     mesh.material = new THREE.MeshStandardMaterial({
       map: texture,
-      toneMapped: false, 
+      toneMapped: false,
       emissive: new THREE.Color(0xffffff),
       emissiveMap: texture,
-      emissiveIntensity: 0.15,
-      metalness: 0.1,
-      roughness: 0.2,
+      emissiveIntensity: 0.4, // podbite, żeby ekran realnie "świecił" w ciemnym otoczeniu
+      metalness: 0,
+      roughness: 0.15,
       side: THREE.DoubleSide,
     });
-    
-    mesh.visible = true;
 
-  }, [screenContent, texture]);
+    mesh.castShadow = false;
+    mesh.visible = true;
+  }, [screen, texture]);
 
   return (
     <primitive
       object={scene}
-      scale={0.1}
+      scale={4.4}
+      position={[-1.5, -1.6, -10]}
       rotation={[0, -Math.PI / 7.5, 0]}
     />
   );
@@ -96,56 +168,86 @@ const Model = ({ progress = 0 }: { progress?: number }) => {
 
 export default (props: { progress?: number }) => {
   return (
-    <div className="w-full h-full -translate-10">
-      <Canvas 
-        camera={{ position: [3, 10, 37], fov: 92.5 }}
-        shadows 
+    <div className="w-full h-full">
+      <Canvas
+        camera={{ position: [3, 6, 30], fov: BASE_FOV }}
+        // "percentage" = PCFShadowMap. `shadows` (true) mapuje sie na PCFSoftShadowMap,
+        // ktory jest w three >=0.185 deprecated i i tak fallbackuje do PCFShadowMap.
+        shadows="percentage"
         dpr={[1, 2]}
-        gl={{ antialias: true, powerPreference: 'high-performance' }}
+        gl={{
+          antialias: true,
+          powerPreference: 'high-performance',
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.25,
+          alpha: true,
+        }}
+        style={{ background: 'transparent', width: '100%', height: '100%' }}
       >
-        <ambientLight intensity={0.25} />
+        <ResponsiveFraming />
+
+        <ambientLight intensity={0.35} color="#404060" />
+
         <directionalLight
-          position={[4, 6, 4]}
-          intensity={0.9}
-          color="#fffced"
-        />
+          position={[15, 20, 10]}
+          intensity={0.06}
+          color="#ffeedd"
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+          shadow-bias={-0.0005}
+        >
+          <orthographicCamera
+            attach="shadow-camera"
+            args={[-15, 15, 15, -15, 1, 60]}
+          />
+        </directionalLight>
+
         <directionalLight
-          position={[-6, 2, 1]}
-          intensity={1.25}
-          color="#ffdcdc"
+          position={[-15, 5, -10]}
+          intensity={0.1}
+          color="#5599ff"
         />
-        <spotLight
-          position={[-2, 4, -6]}
-          angle={0.5}
-          penumbra={0.8}
-          intensity={0.8}
-          color="#a8d8ff"
+
+        <directionalLight
+          position={[-10, -5, -20]}
+          intensity={0.6}
+          color="#8888ff"
         />
-        <spotLight
-          position={[3, 3, -4]}
-          angle={0.45}
-          penumbra={0.8}
-          intensity={0.5}
-          color="#ffd9a8"
+
+        <pointLight
+          position={[0, 1.5, 4]}
+          intensity={0.6}
+          color="#66aaff"
+          distance={12}
         />
-        <EffectComposer multisampling={8}>
-          <Bloom luminanceThreshold={0} luminanceSmoothing={15} height={300} />
-          <Noise opacity={0.005} />
-          <Vignette eskil={false} offset={0.1} darkness={1.1} />
-        </EffectComposer>
-        <Environment preset="studio" environmentIntensity={0.1} />
+
+        <Environment preset="city" background={false} environmentIntensity={0.8} />
+
         <Model progress={props.progress} />
+
         <ContactShadows
-          position={[0, -0.8, 0]}
-          opacity={5}
-          scale={15}
-          blur={5}
-          far={1.05}
+          position={[-1.5, -2.6, -10]}
+          opacity={0.75}
+          scale={10}
+          blur={2}
+          far={4}
+          resolution={1024}
+          color="#000000"
         />
+
+        <EffectComposer>
+          <Bloom
+            intensity={0.18}
+            luminanceThreshold={0.5}
+            luminanceSmoothing={0.85}
+            height={300}
+            mipmapBlur
+          />
+          <Noise opacity={0.035} blendFunction={THREE.MultiplyBlending} blendingMode={1} />
+        </EffectComposer>
       </Canvas>
     </div>
   );
 };
 
-useGLTF.preload('/models/laptop.glb');
-useEnvironment.preload({ preset: 'studio' });
+useGLTF.preload('/models/laptop4.glb');
