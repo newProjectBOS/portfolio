@@ -287,7 +287,7 @@ export default () => {
             }}
           >
             <div className="w-full h-full pointer-events-none md:pointer-events-auto">
-              <Laptop3D progress={progress} />
+              {/*<Laptop3D progress={progress} />*/}
             </div>
           </div>
 
