@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { FiMail, FiArrowRight } from "react-icons/fi";
 
 import SecondDiv from "./secondDiv"
-import Laptop3D from "../models/laptop"
 import { useAppReady } from "../../loading/loadingStore"
 import EarthBackground from "./earthBackground";
 
