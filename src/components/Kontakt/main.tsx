@@ -42,9 +42,6 @@ const NavComponent = (page: Pages) => {
     )
 }
 
-// Biała fala na górze — ta sama krzywa odbita w pionie (translate + scale),
-// dzięki czemu wypełnienie jest u góry i płynnie łączy białą sekcję powyżej
-// z czarnym tłem kontaktu.
 const WAVE_PATH =
     "M0,128L60,149.3C120,171,240,213,360,202.7C480,192,600,128,720,117.3C840,107,960,149,1080,160C1200,171,1320,149,1380,138.7L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z";
 

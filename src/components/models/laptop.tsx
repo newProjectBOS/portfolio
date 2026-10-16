@@ -214,7 +214,6 @@ export default (props: { progress?: number }) => {
           color="#8888ff"
         />
 
-        {/* Światło odbite od "ekranu", żeby korpus łapał niebieskawy blask */}
         <pointLight
           position={[0, 1.5, 4]}
           intensity={0.6}
