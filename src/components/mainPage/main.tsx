@@ -261,12 +261,12 @@ export default () => {
           <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
             <SlideInText
               key={`hero-title-${ready}`}
-              text="Lorem ipsum"
+              text="Podbij świat internetu. Zacznij od dobrej strony."
               className="text-3xl sm:text-4xl md:text-4xl"
             />
             <TypewriterText
               key={`hero-subtitle-${ready}`}
-              text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              text="Budujemy strony internetowe, które wzmacniają wizerunek, przyciągają uwagę i pomagają rozwijać Twój biznes."
               speed={50}
               deleteSpeed={30}
               pauseDuration={2000}
