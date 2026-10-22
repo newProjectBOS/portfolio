@@ -65,7 +65,7 @@ export default () => {
 
       <div className="mb-12 sm:mb-20 max-w-2xl mx-auto text-center px-4">
         <TypewriterText
-          text="Poznaj nasze projekty, które tworzymy z pasją i zaangażowaniem. Każdy z nich to efekt naszej kreatywności i ciężkiej pracy, mający na celu dostarczenie innowacyjnych rozwiązań."
+          text="Zobacz, jak łączymy kreatywne pomysły, nowoczesny design i technologię, by tworzyć strony internetowe dopasowane do celów naszych klientów. Każdy projekt to przemyślana koncepcja, funkcjonalność i dbałość o detale, które pomagają markom wyróżnić się w sieci. Odkryj nasze realizacje i znajdź inspirację dla swojej marki. "
           speed={35}
           loop={false}
           deleteSpeed={30}

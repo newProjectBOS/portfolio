@@ -30,9 +30,9 @@ export default () => {
         Czym sie zajmujemy?
       </h1>
       <p className="text-center text-sm sm:text-base text-zinc-400 mt-3 sm:mt-4 mb-8 sm:mb-12">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-        laoreet tortor in faucibus consequat. Vivamus ac mollis neque. Sed
-        pretium odio et risus lobortis, at viverra est fringilla.
+        Twoja firma zasługuje na stronę, która pokazuje jej potencjał. Łączymy
+        nowoczesny design, przemyślaną funkcjonalność i technologię, aby tworzyć
+        witryny dopasowane do Twojej marki, oferty i potrzeb klientów.
       </p>
       <hr className="border-zinc-800 mb-8 sm:mb-12 w-full lg:max-w-7xl xl:max-w-[88rem] mx-auto" />
       <div className="w-full flex items-center justify-center" id="offert">
