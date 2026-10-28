@@ -20,7 +20,7 @@ type CaseStudyModalProps = {
 };
 
 const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
-  const { companyName, url, longText, cardText, technologies, screenshot } = project;
+  const { companyName, url, longText, cardText, technologies, screenshot, tasks } = project;
   const name = companyName ?? "";
   const domain = getDomain(url);
 
@@ -67,9 +67,6 @@ const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
             exit={{ y: 40, opacity: 0 }}
             transition={{ duration: 0.45, ease: "easeOut", delay: 0.1 }}
           >
-            <p className="text-sm uppercase tracking-[0.2em] text-white/50">
-              Case study
-            </p>
             <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">
               {name}
             </h2>
@@ -91,7 +88,6 @@ const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
               </div>
             )}
 
-            {/* zrzut w ramce okna przeglądarki, przewijany ręcznie */}
             <div className="mt-12 rounded-2xl overflow-hidden ring-1 ring-white/10 bg-zinc-900">
               <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
                 <div className="flex gap-1.5">
@@ -120,6 +116,20 @@ const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
               </p>
             )}
 
+
+            {tasks && tasks.length > 0 && (
+              <div className="mt-12 max-w-3xl flex flex-col gap-6">
+                <h3 className="mt-12 text-2xl font-bold text-white">Jakie prace wykonaliśmy:</h3>
+                <ul className="space-y-4 list-disc list-inside">
+                  {tasks.map((task, index) => (
+                    <li key={index} className="text-lg md:text-xl text-white/80 leading-relaxed whitespace-pre-line">
+                      {task}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {url && (
             <a
               href={url}
@@ -134,6 +144,7 @@ const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
               </svg>
             </a>
             )}
+
           </motion.div>
         </motion.div>
       )}

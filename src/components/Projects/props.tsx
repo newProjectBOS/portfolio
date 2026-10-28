@@ -7,6 +7,7 @@ export type ProjectRow = {
     longText: string | null;
     technologies: string[] | null;
     screenshot: string | null;
+    tasks: string[] | null;
 }
 
 export type ProjectInsert = Partial<ProjectRow>;
