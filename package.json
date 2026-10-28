@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.3.3",
     "3dsvg": "^0.2.1",
     "autoprefixer": "^10.5.0",
+    "dotenv": "^18.0.9",
     "motion": "^12.40.0",
     "postcss": "^8.5.25",
     "react": "^19.2.6",

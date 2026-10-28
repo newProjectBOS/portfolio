@@ -1,29 +1,11 @@
 import type { ProjectCardProps } from "./props";
+import { PLACEHOLDER_IMAGE } from "./props";
 import { useCallback, useState } from "react";
-import { darkTheme, lightTheme } from "./themes";
 import CaseStudyModal from "./caseStudyModal";
 
-const Tag = (props: any) => {
-  const theme = props.isDark ? darkTheme : lightTheme;
-  return (
-    <>
-      {props.newimage ? (
-        <span className={theme.tagRenovation}>Renowacja</span>
-      ) : (
-        <span className={theme.tagNew}>Nowa strona</span>
-      )}
-    </>
-  );
-};
-
-export default ({
-  name,
-  link,
-  description,
-  image,
-  newimage,
-  isDark = false,
-}: ProjectCardProps) => {
+export default ({ project }: ProjectCardProps) => {
+  const { companyName, url, cardText, technologies, screenshot } = project;
+  const name = companyName ?? "";
   const [hover, setHover] = useState(false);
   const [caseStudyOpen, setCaseStudyOpen] = useState(false);
   const closeCaseStudy = useCallback(() => setCaseStudyOpen(false), []);
@@ -34,26 +16,17 @@ export default ({
       onMouseLeave={() => setHover(false)}
       className="relative w-full h-[24rem] md:h-[32rem] xl:h-[38rem] rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
     >
+      
       <img
-        src={image}
+        src={screenshot ?? PLACEHOLDER_IMAGE}
         alt={name}
-        className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out ${
-          hover ? "scale-105" : "scale-100"
+        loading="lazy"
+        className={`absolute inset-0 w-full h-full object-cover transition-[object-position] ${
+          screenshot && hover
+            ? "object-bottom duration-[6000ms] ease-in-out"
+            : "object-top duration-700 ease-out"
         }`}
       />
-
-      {newimage && (
-        <div
-          className="absolute inset-0 transition-opacity duration-500 ease-in-out"
-          style={{ opacity: hover ? 1 : 0 }}
-        >
-          <img
-            src={newimage}
-            alt={`${name} - po`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/10 to-black/85 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none" />
@@ -66,16 +39,24 @@ export default ({
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-3">
-        <div>
-          <Tag newimage={newimage} isDark={isDark} />
-        </div>
+        {technologies && technologies.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {technologies.map((tech) => (
+              <span
+                key={tech}
+                className="text-xs font-medium text-white bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1 rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="relative flex items-end">
           <p className="text-white/90 text-sm leading-snug max-w-[65%]">
-            {description}
+            {cardText}
           </p>
 
-          {/* napisy rozwijają się po najechaniu na cały kafelek */}
           <div className="absolute right-0 bottom-0 flex items-center gap-2">
             <button
               type="button"
@@ -104,7 +85,7 @@ export default ({
               </svg>
             </button>
             <a
-              href={link}
+              href={url ?? undefined}
               target="_blank"
               rel="noreferrer"
               aria-label="Przejdź do strony"
@@ -133,7 +114,7 @@ export default ({
       </div>
 
       <CaseStudyModal
-        project={{ name, link, description, image, newimage }}
+        project={project}
         open={caseStudyOpen}
         onClose={closeCaseStudy}
       />
