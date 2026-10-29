@@ -8,6 +8,7 @@ import { useAppReady } from "../../loading/loadingStore"
 import EarthBackground from "./earthBackground";
 
 const DESKTOP = "(min-width: 768px)";
+const HERO_TITLE = "Podbij świat internetu.";
 
 export default () => {
   const [progress, setProgress] = useState(0);
@@ -261,8 +262,14 @@ export default () => {
           <div className="order-1 w-full min-w-0 max-w-3xl px-5 sm:px-8 md:px-4 pb-4 sm:pb-6 md:pb-16 lg:pb-24 md:pl-12 lg:pl-24 text-white z-10">
             <SlideInText
               key={`hero-title-${ready}`}
-              text="Podbij świat internetu. Zacznij od dobrej strony."
+              text={HERO_TITLE}
               className="text-3xl sm:text-4xl md:text-4xl"
+            />
+            <SlideInText
+              key={`hero-tagline-${ready}`}
+              text="Zacznij od dobrej strony."
+              delay={HERO_TITLE.length * 0.03 + 0.3}
+              className="mt-1 sm:mt-2 text-3xl sm:text-4xl md:text-4xl"
             />
             <TypewriterText
               key={`hero-subtitle-${ready}`}

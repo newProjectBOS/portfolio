@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import TypewriterText from "../../effects/TypewriterText";
 import ProjectCard from "./projectCard";
-import data from "./allProjects";
-import type { ProjectsLinkProps } from "./props";
+import type { ProjectRow } from "./props";
 import ScrableText from "../../effects/scrableText";
 import { darkTheme, lightTheme } from "./themes";
 import { gridVariants, cardVariants } from "../../effects/motionAnimations";
 import { motion } from "framer-motion";
-
-type Filter = "all" | "new" | "renovation";
+import fetchProjects from "./fetchApi";
 
 function chunkIntoPairs<T>(arr: T[]): T[][] {
   const pairs: T[][] = [];
@@ -19,7 +17,9 @@ function chunkIntoPairs<T>(arr: T[]): T[][] {
 }
 
 export default () => {
-  const [filter] = useState<Filter>("all");
+  const [projects, setProjects] = useState<ProjectRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [dark, setDark] = useState(false);
   const watcherRef = useRef<HTMLDivElement>(null);
 
@@ -45,14 +45,26 @@ export default () => {
     };
   }, []);
 
-  const filtered = data.filter((project: ProjectsLinkProps) => {
-    if (filter === "new") return !project.newimage;
-    if (filter === "renovation") return project.newimage;
-    return true;
-  });
+  useEffect(() => {
+    let cancelled = false;
+    fetchProjects()
+      .then((rows) => {
+        if (!cancelled) setProjects(rows);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled)
+          setError(err instanceof Error ? err.message : "Nie udało się pobrać projektów");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const theme = dark ? darkTheme : lightTheme;
-  const pairs = chunkIntoPairs(filtered);
+  const pairs = chunkIntoPairs(projects);
 
   return (
     <div className={theme.main} id="projects">
@@ -74,33 +86,36 @@ export default () => {
       </div>
 
       <div ref={watcherRef} className="w-full">
+        {loading && (
+          <p className={theme.description + " text-center"}>Ładowanie projektów…</p>
+        )}
+        {error && (
+          <p className={theme.description + " text-center"}>{error}</p>
+        )}
+
         <div className="md:hidden w-full">
-          <ProjectsSlider projects={filtered} dark={dark} />
+          <ProjectsSlider projects={projects} />
         </div>
 
-        <motion.div
-          className="hidden md:flex mt-6 flex-col gap-6 md:gap-8 w-full max-w-[90rem] mx-auto px-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={gridVariants}
-        >
-          {pairs.map((pair, pairIndex) => (
-            <PairRow key={pairIndex} pair={pair} dark={dark} />
-          ))}
-        </motion.div>
+        {projects.length > 0 && (
+          <motion.div
+            className="hidden md:flex mt-6 flex-col gap-6 md:gap-8 w-full max-w-[90rem] mx-auto px-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={gridVariants}
+          >
+            {pairs.map((pair, pairIndex) => (
+              <PairRow key={pairIndex} pair={pair} />
+            ))}
+          </motion.div>
+        )}
       </div>
     </div>
   );
 };
 
-function ProjectsSlider({
-  projects,
-  dark,
-}: {
-  projects: ProjectsLinkProps[];
-  dark: boolean;
-}) {
+function ProjectsSlider({ projects }: { projects: ProjectRow[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   useEffect(() => {
@@ -153,22 +168,14 @@ function ProjectsSlider({
       >
         {projects.map((project, index) => (
           <div
-            key={project.link ?? index}
+            key={project.id}
             className="snap-center shrink-0 w-[84vw] sm:w-[70vw] transition-transform duration-300"
             style={{
               transform: active === index ? "scale(1)" : "scale(0.94)",
               opacity: active === index ? 1 : 0.55,
             }}
           >
-            <ProjectCard
-              name={project.name}
-              link={project.link}
-              description={project.description}
-              image={project.image}
-              newimage={project.newimage}
-              isDark={dark}
-              isHovered={active === index}
-            />
+            <ProjectCard project={project} />
           </div>
         ))}
       </div>
@@ -210,7 +217,7 @@ function ProjectsSlider({
   );
 }
 
-function PairRow({ pair, dark }: { pair: ProjectsLinkProps[]; dark: boolean }) {
+function PairRow({ pair }: { pair: ProjectRow[] }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
@@ -221,7 +228,7 @@ function PairRow({ pair, dark }: { pair: ProjectsLinkProps[]; dark: boolean }) {
 
         return (
           <motion.div
-            key={project.link ?? index}
+            key={project.id}
             variants={cardVariants as any}
             className="flex"
             style={{ flexBasis: 0 }}
@@ -241,15 +248,7 @@ function PairRow({ pair, dark }: { pair: ProjectsLinkProps[]; dark: boolean }) {
               onHoverEnd={() => setHoveredIndex(null)}
               whileTap={{ scale: 0.98 }}
             >
-              <ProjectCard
-                name={project.name}
-                link={project.link}
-                description={project.description}
-                image={project.image}
-                newimage={project.newimage}
-                isDark={dark}
-                isHovered={isHovered}
-              />
+              <ProjectCard project={project} />
             </motion.div>
           </motion.div>
         );
