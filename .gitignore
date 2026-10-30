@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 read.me
+# zmienne środowiskowe
+.env
