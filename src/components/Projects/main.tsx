@@ -7,6 +7,7 @@ import { darkTheme, lightTheme } from "./themes";
 import { gridVariants, cardVariants } from "../../effects/motionAnimations";
 import { motion } from "framer-motion";
 import fetchProjects from "./fetchApi";
+import { useDarkZone } from "../../hooks/useDarkZone";
 
 function chunkIntoPairs<T>(arr: T[]): T[][] {
   const pairs: T[][] = [];
@@ -20,30 +21,8 @@ export default () => {
   const [projects, setProjects] = useState<ProjectRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [dark, setDark] = useState(false);
   const watcherRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setDark(entry.isIntersecting);
-      },
-      {
-        threshold: 0,
-        rootMargin: "-50% 0px -50% 0px",
-      },
-    );
-
-    if (watcherRef.current) {
-      observer.observe(watcherRef.current);
-    }
-
-    return () => {
-      if (watcherRef.current) {
-        observer.unobserve(watcherRef.current);
-      }
-    };
-  }, []);
+  const dark = useDarkZone(watcherRef);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,7 +64,8 @@ export default () => {
         />
       </div>
 
-      <div ref={watcherRef} className="w-full">
+      {/* dolny padding sekcji jest w strefie, żeby przejście do oferty nie migało na jasno */}
+      <div ref={watcherRef} className="w-full pb-24">
         {loading && (
           <p className={theme.description + " text-center"}>Ładowanie projektów…</p>
         )}

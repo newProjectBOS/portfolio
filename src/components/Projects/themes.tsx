@@ -1,5 +1,5 @@
 export const darkTheme = {
-  main: "bg-zinc-950 min-h-[60vh] flex flex-col items-center px-4 py-24 transition-colors duration-500",
+  main: "bg-zinc-950 min-h-[60vh] flex flex-col items-center px-4 pt-24 transition-colors duration-500",
   header: "max-w-5xl mx-auto px-4 text-center",
   title: "text-4xl font-bold mb-4 text-white",
   divider: "my-6 border-gray-700",
@@ -20,7 +20,7 @@ export const darkTheme = {
 }
 
 export const lightTheme = {
-  main: "bg-gray-100 min-h-[60vh] flex flex-col items-center px-4 py-24 transition-colors duration-500",
+  main: "bg-gray-100 min-h-[60vh] flex flex-col items-center px-4 pt-24 transition-colors duration-500",
   header: "max-w-5xl mx-auto px-4 text-center",
   title: "text-4xl font-bold mb-4 text-black",
   divider: "my-6 border-gray-200",
