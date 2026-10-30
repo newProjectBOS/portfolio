@@ -99,7 +99,7 @@ export default () => {
 
         {projects.length > 0 && (
           <motion.div
-            className="hidden md:flex mt-6 flex-col gap-6 md:gap-8 w-full max-w-[90rem] mx-auto px-4"
+            className="hidden md:flex mt-6 flex-col gap-6 md:gap-8 w-full max-w-[120rem] mx-auto px-3 lg:px-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
@@ -221,7 +221,7 @@ function PairRow({ pair }: { pair: ProjectRow[] }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 md:gap-8 w-full">
+    <div className="flex flex-col lg:flex-row gap-6 md:gap-8 w-full">
       {pair.map((project, index) => {
         const isHovered = hoveredIndex === index;
         const isOtherHovered = hoveredIndex !== null && hoveredIndex !== index;
