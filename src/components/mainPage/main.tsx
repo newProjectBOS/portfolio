@@ -278,7 +278,7 @@ export default () => {
               deleteSpeed={30}
               pauseDuration={2000}
               loop={false}
-              className="mt-5 sm:mt-8 font-medium text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl break-words"
+              className="mt-5 sm:mt-8 text-white text-lg sm:text-1xl md:text-2xl lg:text-3xl break-words"
               showCursor={true}
             />
             <div className="hidden md:flex gap-3 mt-7 sm:mt-10">
