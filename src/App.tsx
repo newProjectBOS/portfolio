@@ -7,6 +7,7 @@ import Projects from './components/Projects/main.tsx'
 import Kontakt from './components/Kontakt/main.tsx'
 import Technologies from './components/technologies/main.tsx'
 import Offert from './components/offert/main.tsx'
+import Progress from './components/progress/main.tsx'
 import './style.css'
 
 export default () => {
@@ -18,6 +19,7 @@ export default () => {
         <MainPage />
         <Projects />
         <Offert />
+        <Progress />
         <AboutUs />
         <Technologies />
         <Kontakt />
