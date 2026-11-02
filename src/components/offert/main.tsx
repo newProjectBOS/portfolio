@@ -1,6 +1,6 @@
 import ScrableText from "../../effects/scrableText";
 import { motion } from "framer-motion";
-import { FiImage, FiMail } from "react-icons/fi";
+import { FiMail } from "react-icons/fi";
 import { useRef } from "react";
 import { gridVariants, sectionVariants } from "../../effects/motionAnimations";
 import { useDarkZone } from "../../hooks/useDarkZone";
