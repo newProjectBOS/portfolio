@@ -58,9 +58,6 @@ export default () => {
                 variants={sectionVariants}
                 className={theme.item}
               >
-                <span className={theme.itemIndex}>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
                 <h3 className={theme.itemTitle}>
                   <Icon
                     aria-hidden="true"
