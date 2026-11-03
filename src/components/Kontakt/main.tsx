@@ -14,16 +14,20 @@ const hoverColorMap: Record<string, string> = {
 
 const ContactComponent = ({ name, url, icon }: Social) => {
     const hoverClass = hoverColorMap[name.toLowerCase()] ?? "";
+    const label = url.startsWith("tel:")
+        ? url.slice(4).replace(/(\d{3})(?=\d)/g, "$1 ")
+        : name;
+    const href = url.includes("@") && !url.includes(":") ? `mailto:${url}` : url;
     return (
         <li>
             <a
-                href={url}
+                href={href}
                 className={`flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-base text-zinc-200 hover:border-white/20 transition-colors ${hoverClass}`}
             >
                 <span className="[&_svg]:w-6 [&_svg]:h-6 shrink-0">
                     {icon}
                 </span>
-                {name}
+                {label}
             </a>
         </li>
     );
@@ -94,7 +98,7 @@ export default () => {
                             Skontaktuj się z nami
                         </h2>
                         <p className="text-base text-zinc-300 leading-relaxed mb-8">
-                            Jesteśmy do dyspozycji — napisz, zadzwoń lub obserwuj nas na Instagramie.
+                            Jesteśmy do dyspozycji - napisz, zadzwoń lub obserwuj nas na Instagramie.
                         </p>
                         <ul className="flex flex-col gap-1.5 w-fit mx-auto md:mx-0">
                             {Object.values(socials).map((social) => {

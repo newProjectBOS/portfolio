@@ -1,4 +1,4 @@
-import { FiInstagram, FiFacebook, FiLinkedin, FiMail, FiPhone } from "react-icons/fi";
+import { FiInstagram, FiFacebook, FiMail, FiPhone } from "react-icons/fi";
 
 type Social = {
     name: string;
@@ -14,22 +14,17 @@ const socials: Record<string, Social> = {
     },
     "facebook": {
         name: "Facebook",
-        url: "https://facebook.com",
+        url: "https://www.facebook.com/profile.php?id=61590577830014",
         icon: <FiFacebook />
-    },
-    "linkedin": {
-        name: "LinkedIn",
-        url: "https://linkedin.com",
-        icon: <FiLinkedin />
     },
     "email": {
         name: "Email",
-        url: "test@example.com",
+        url: "grelsites@gmail.com",
         icon: <FiMail />
     },
     "phone": {
         name: "Telefon",
-        url: "tel:111222333",
+        url: "tel:573310667",
         icon: <FiPhone />
     }
 };

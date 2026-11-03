@@ -17,4 +17,3 @@ export type ProjectCardProps = {
 };
 
 
-export const PLACEHOLDER_IMAGE = "example.jpg";

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import type { ProjectRow } from "./props";
-import { PLACEHOLDER_IMAGE } from "./props";
 
 const getDomain = (url: string | null) => {
   if (!url) return null;
@@ -102,11 +101,17 @@ const CaseStudyModal = ({ project, open, onClose }: CaseStudyModalProps) => {
                 )}
               </div>
               <div className="max-h-[70vh] overflow-y-auto overscroll-contain">
-                <img
-                  src={screenshot ?? PLACEHOLDER_IMAGE}
-                  alt={name}
-                  className="block w-full h-auto"
-                />
+                {screenshot ? (
+                  <img
+                    src={screenshot}
+                    alt={name}
+                    className="block w-full h-auto"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center aspect-video text-sm text-white/40 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black">
+                    Brak podglądu
+                  </div>
+                )}
               </div>
             </div>
 

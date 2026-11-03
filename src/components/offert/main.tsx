@@ -103,7 +103,12 @@ export default () => {
           viewport={{ once: true, amount: 0.3 }}
           variants={sectionVariants}
         >
-          <img src = "/example.jpg" className="rounded-3xl shadow-lg" />
+          <img
+            src="/background.webp"
+            alt=""
+            loading="lazy"
+            className="aspect-[9/16] w-full rounded-3xl shadow-lg object-cover object-left"
+          />
         </motion.div>
       </div>
     </section>

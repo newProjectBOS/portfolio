@@ -1,5 +1,4 @@
 import type { ProjectCardProps } from "./props";
-import { PLACEHOLDER_IMAGE } from "./props";
 import { useCallback, useState } from "react";
 import CaseStudyModal from "./caseStudyModal";
 
@@ -16,17 +15,20 @@ export default ({ project }: ProjectCardProps) => {
       onMouseLeave={() => setHover(false)}
       className="relative w-full h-[24rem] md:h-[32rem] xl:h-[38rem] rounded-3xl overflow-hidden bg-black shadow-2xl ring-1 ring-white/10 group"
     >
-      
-      <img
-        src={screenshot ?? PLACEHOLDER_IMAGE}
-        alt={name}
-        loading="lazy"
-        className={`absolute inset-0 w-full h-full object-cover transition-[object-position] ${
-          screenshot && hover
-            ? "object-bottom duration-[6000ms] ease-in-out"
-            : "object-top duration-700 ease-out"
-        }`}
-      />
+      {screenshot ? (
+        <img
+          src={screenshot}
+          alt={name}
+          loading="lazy"
+          className={`absolute inset-0 w-full h-full object-cover transition-[object-position] ${
+            hover
+              ? "object-bottom duration-[6000ms] ease-in-out"
+              : "object-top duration-700 ease-out"
+          }`}
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black" />
+      )}
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/10 to-black/85 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none" />

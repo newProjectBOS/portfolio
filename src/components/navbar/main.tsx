@@ -6,7 +6,6 @@ import pages from "../../data/pages";
 const socialLinks = [
   { href: socials.instagram.url, icon: socials.instagram.icon },
   { href: socials.facebook.url, icon: socials.facebook.icon },
-  { href: socials.linkedin.url, icon: socials.linkedin.icon },
   { href: `mailto:${socials.email.url}`, icon: socials.email.icon },
   { href: `${socials.phone.url}`, icon: socials.phone.icon },
 ];
