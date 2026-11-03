@@ -35,7 +35,7 @@ export default () => {
     <section
       id="progress"
       aria-labelledby="progressTitle"
-      className="relative overflow-hidden bg-gray-100 py-24 selection:text-blue-900 sm:py-28 md:py-32"
+      className="relative overflow-hidden bg-white py-24 selection:text-blue-900 sm:py-28 md:py-32 pt-32 pb-32"
     >
       <div className="relative mx-auto max-w-7xl px-4">
         <motion.header
