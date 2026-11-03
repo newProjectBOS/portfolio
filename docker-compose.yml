@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      target: prod
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:?brak VITE_SUPABASE_URL w .env}
+        VITE_SUPABASE_PUBLICKEY: ${VITE_SUPABASE_PUBLICKEY:?brak VITE_SUPABASE_PUBLICKEY w .env}
+    image: portfoliobos-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules

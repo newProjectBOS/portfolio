@@ -52,7 +52,7 @@ export default () => {
             viewport={{ once: true, amount: 0.2 }}
             variants={gridVariants}
           >
-            {OFFERT_POINTS.map(({ icon: Icon, title, description }, index) => (
+            {OFFERT_POINTS.map(({ icon: Icon, title, description }) => (
               <motion.li
                 key={title}
                 variants={sectionVariants}
